@@ -1,21 +1,29 @@
 import React from "react";
-import {Header} from "../../../social_network/social_network/src/components/Header/Header";
-import {Navbar} from "../../../social_network/social_network/src/components/Navbar/Navbar";
-import {Footer} from "../../../social_network/social_network/src/components/Footer/Footer";
+import {FilterValueType} from "../App";
 
-
-type TaskType = {
+export type TaskType = {
     id: number,
     title: string,
     isDone: boolean
 }
 type PropsType = {
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskType>,
+    removeTask: (taskID: number) => void,
+    changeFilter: (Filter: FilterValueType) => void
 }
 
-
 export function Todolist(props: PropsType) {
+
+    const tasksJSX = props.tasks.map(t => <li key={t.id}><input type="checkbox" checked={t.isDone}/>
+        <span>{t.title}</span>
+        <button onClick={() => props.removeTask(t.id)}>X</button>
+    </li>)
+
+    const onClickAll = () => props.changeFilter("all")
+    const onClickActive = () => props.changeFilter("active")
+    const onClickCompleted = () => props.changeFilter("completed")
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -24,18 +32,15 @@ export function Todolist(props: PropsType) {
                 <button>+</button>
             </div>
             <ul>
-                <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
+                {tasksJSX}
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <button onClick={onClickAll}>All</button>
+                <button onClick={onClickActive}>All</button>
+                <button onClick={onClickCompleted}>All</button>
             </div>
         </div>
     )
 }
 
-// export default Todolist
 
