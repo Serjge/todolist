@@ -22,15 +22,7 @@ export function App() {
         setFilter(filter)
     }
 
-    function changeStatus(id: string, isDone: boolean) {
-        let task = tasks.find(t => t.id === id)
-        if (task) {
-            task.isDone = isDone
-            setTasks([...tasks])
-        }
-    }
-
-    function addTask(title: string) {
+    function addTask(title:string) {
         let task = {id: v1(), title: title, isDone: false}
         let newTasks = [task, ...tasks]
         setTasks(newTasks)
@@ -56,9 +48,7 @@ export function App() {
                 tasks={taskForRender}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
-                addTask={addTask}
-                changeTaskStatus={changeStatus}
-            filter={filter}/>
+            addTask={addTask}/>
         </div>
     );
 }
