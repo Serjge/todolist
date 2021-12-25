@@ -2,6 +2,9 @@ import React, {ChangeEvent} from 'react';
 import {FilterValuesType} from '../App';
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Button, Grid, IconButton} from "@mui/material";
+import Checkbox from '@mui/material/Checkbox';
+import {Delete} from '@mui/icons-material';
 
 export type TaskType = {
     id: string
@@ -48,12 +51,14 @@ export function Todolist({
         renameTodoList(todolistId, title)
     }
     return <div>
-        <h3>
+        <h3 style={{display:'flex', justifyContent:'space-between'}}>
             <EditableSpan title={title} rename={renameTodoListHandler}/>
-            <button onClick={deleteTodoList}>x</button>
+            <IconButton onClick={deleteTodoList} aria-label="delete">
+                <Delete/>
+            </IconButton>
         </h3>
-        <AddItemForm addTask={addTaskHandler}/>
-        <ul>
+        <AddItemForm label={'Name task'} addTask={addTaskHandler}/>
+        <div>
             {
                 tasks.map(t => {
                     const onClickHandler = () => removeTask(todolistId, t.id)
@@ -64,27 +69,46 @@ export function Todolist({
                         renameTask(todolistId, t.id, title)
                     }
 
-                    return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <input type="checkbox"
-                               onChange={onChangeHandler}
-                               checked={t.isDone}/>
-                        <EditableSpan rename={renameTaskHandler} title={t.title}/>
-                        <button onClick={onClickHandler}>x</button>
-                    </li>
+                    return <div style={{height: '60px'}} key={t.id} className={t.isDone ? "is-done" : ""}>
+                        <Grid container alignItems="center" justifyContent="space-between" spacing={1}>
+                            <Grid item><Checkbox
+
+
+                                inputProps={{'aria-label': 'controlled'}}
+                                size={"small"}
+                                onChange={onChangeHandler}
+                                checked={t.isDone}/>
+                            </Grid>
+                            <Grid item>
+                                <EditableSpan rename={renameTaskHandler} title={t.title}/>
+                            </Grid>
+                            <Grid item>
+                                <IconButton onClick={onClickHandler} aria-label="delete">
+                                    <Delete/>
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    </div>
                 })
             }
-        </ul>
+        </div>
 
-        <div>
-            <button className={filter === 'all' ? "active-filter" : ""}
-                    onClick={allClickHandler}>All
-            </button>
-            <button className={filter === 'active' ? "active-filter" : ""}
-                    onClick={activeClickHandler}>Active
-            </button>
-            <button className={filter === 'completed' ? "active-filter" : ""}
-                    onClick={completedClickHandler}>Completed
-            </button>
+        <div style={{display:'flex', justifyContent:'center'}}>
+            <Button style={{margin: '5px'}} onClick={allClickHandler}
+                    variant={filter === 'all' ? "contained" : 'outlined'}
+                    size={"small"}
+            >All
+            </Button>
+            <Button style={{margin: '5px'}} onClick={activeClickHandler}
+                    variant={filter === 'active' ? "contained" : 'outlined'}
+                    size={"small"}
+            >Active
+            </Button>
+            <Button style={{margin: '5px'}} onClick={completedClickHandler}
+                    variant={filter === 'completed' ? "contained" : 'outlined'}
+                    size={"small"}
+            >Completed
+            </Button>
         </div>
     </div>
 }

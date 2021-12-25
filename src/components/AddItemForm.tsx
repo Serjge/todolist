@@ -1,19 +1,22 @@
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
 type AddItemFormPropsType = {
     addTask: (title: string) => void
+    label: string
 
 }
-export const AddItemForm = ({addTask}: AddItemFormPropsType) => {
+export const AddItemForm = ({addTask, label}: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")
-    let [error, setError] = useState<string >('')
+    let [error, setError] = useState<boolean>(false)
 
     const addTaskHandler = () => {
         if (title.trim() !== "") {
             addTask(title.trim());
             setTitle("");
         } else {
-            setError("Title is required");
+            setError(true);
         }
     }
 
@@ -22,20 +25,27 @@ export const AddItemForm = ({addTask}: AddItemFormPropsType) => {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError('');
+        setError(false);
         if (e.key === 'Enter') {
             addTaskHandler();
         }
     }
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField
+                       label={error ? "Title is required" : label}
+                       error={error}
+                       variant="outlined"
+                       value={title}
+                       size="small"
+                       onChange={onChangeHandler}
+                       onKeyPress={onKeyPressHandler}
             />
-            <button onClick={addTaskHandler}>+</button>
-            {error && <div className="error-message">{error}</div>}
+            <Button style={{
+                marginLeft: '10px', maxWidth: '40px',
+                maxHeight: '40px', minWidth: '40px', minHeight: '40px'
+            }}
+                    variant="contained" onClick={addTaskHandler} disabled={error}>+</Button>
         </div>
     )
 }

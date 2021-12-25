@@ -1,12 +1,15 @@
 import React, {useState} from "react";
+import TextField from "@mui/material/TextField";
 
 type EditableSpanPropsType = {
     title: string
     rename: (title: string) => void
 }
+
 export const EditableSpan = ({title, rename}: EditableSpanPropsType) => {
     const [edit, setEdit] = useState(true)
-    const [newTitle, setNewTitle] = useState()
+    const [newTitle, setNewTitle] = useState('')
+
     const activeViewMode = () => {
         setEdit(true)
         rename(newTitle)
@@ -19,9 +22,25 @@ export const EditableSpan = ({title, rename}: EditableSpanPropsType) => {
         setEdit(false)
         setNewTitle(title)
     }
+    const onKeyPress= (e: React.KeyboardEvent<HTMLDivElement>)=> {
+        if (e.key === 'Enter') {
+            activeViewMode();
+        }
+    }
     return (
         edit
-            ? <span onDoubleClick={onClickSpan}>{title}</span>
-            : <input value={newTitle} onChange={onChangeNameHandler} autoFocus onBlur={activeViewMode}/>
+            ? <p style={{whiteSpace:'pre-wrap', maxWidth: '200px' }} onDoubleClick={onClickSpan}>{title}</p>
+            : <TextField id="outlined-basic"
+                         variant="outlined"
+                         value={newTitle}
+                         size="small"
+                         onChange={onChangeNameHandler}
+                         onBlur={activeViewMode}
+                         autoFocus
+                         onKeyPress={onKeyPress}
+                         sx={{ width: '170px' }}
+
+            />
+
     )
 }
