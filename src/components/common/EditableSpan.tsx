@@ -4,17 +4,30 @@ import TextField from "@mui/material/TextField";
 type EditableSpanPropsType = {
     title: string
     rename: (title: string) => void
+    label: string
 }
 
-export const EditableSpan = ({title, rename}: EditableSpanPropsType) => {
+export const EditableSpan = React.memo( ({title, rename, label}: EditableSpanPropsType) => {
     const [edit, setEdit] = useState(true)
     const [newTitle, setNewTitle] = useState('')
+    const [error, setError] = useState<boolean>(false)
+
+    console.log('EditableSpan ' + title)
 
     const activeViewMode = () => {
-        setEdit(true)
-        rename(newTitle)
+        if (newTitle.trim()!=='') {
+            setEdit(true)
+            rename(newTitle)
+
+        }else {
+            setError(true)
+        }
+
     }
     const onChangeNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(error) {
+            setError(false)
+        }
         setNewTitle(e.currentTarget.value)
 
     }
@@ -27,10 +40,13 @@ export const EditableSpan = ({title, rename}: EditableSpanPropsType) => {
             activeViewMode();
         }
     }
+
     return (
         edit
             ? <p style={{whiteSpace:'pre-wrap', maxWidth: '200px' }} onDoubleClick={onClickSpan}>{title}</p>
             : <TextField id="outlined-basic"
+                         label={error ? "Title is required" : label}
+                         error={error}
                          variant="outlined"
                          value={newTitle}
                          size="small"
@@ -39,8 +55,7 @@ export const EditableSpan = ({title, rename}: EditableSpanPropsType) => {
                          autoFocus
                          onKeyPress={onKeyPress}
                          sx={{ width: '170px' }}
-
             />
 
     )
-}
+})

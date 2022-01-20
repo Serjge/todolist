@@ -5,12 +5,12 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 type AddItemFormPropsType = {
     addTask: (title: string) => void
     label: string
-
 }
-export const AddItemForm = ({addTask, label}: AddItemFormPropsType) => {
+
+export const AddItemForm = React.memo(({addTask, label}: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<boolean>(false)
-
+    console.log(`AddItemForm ${label}`)
     const addTaskHandler = () => {
         if (title.trim() !== "") {
             addTask(title.trim());
@@ -25,7 +25,7 @@ export const AddItemForm = ({addTask, label}: AddItemFormPropsType) => {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false);
+        error && setError(false);
         if (e.key === 'Enter') {
             addTaskHandler();
         }
@@ -48,4 +48,4 @@ export const AddItemForm = ({addTask, label}: AddItemFormPropsType) => {
                     variant="contained" onClick={addTaskHandler} disabled={error}>+</Button>
         </div>
     )
-}
+})

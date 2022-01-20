@@ -1,55 +1,50 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
-import {Todolist} from './components/Todolist';
+import {Todolist} from './components/TodoList/Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from "./components/AddItemForm";
+import {AddItemForm} from "./components/common/AddItemForm";
 import {Container, Grid, Paper} from "@mui/material";
-import ButtonAppBar from "./components/ButtonAppBar";
-import {addTodolistTasksAC} from "./reducers/TasksReducer";
-import {addTodoListAC, TodoListsType} from "./reducers/TodolistsReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {rootReducerType} from "./store/store";
+import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar";
+import {TodoListsType} from "./reducers/TodolistsReducer";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "./store/store";
+import { addTodoList } from './reducers/actions/todolistsActions';
 
-function App() {
 
-    let todoLists = useSelector<rootReducerType, TodoListsType[]>(state => state.todoList)
+export const App = React.memo(() => {
+
+    const todoLists =  useAppSelector<TodoListsType[]>(state => state.todoList)
     let dispatch = useDispatch()
 
-    const addTodoList = (title: string) => {
+    console.log('App')
+
+    const addTodoListHandler = useCallback((title: string) => {
         const newId = v1()
-        dispatch(addTodoListAC(newId, title))
-        dispatch(addTodolistTasksAC(newId))
-    }
+        dispatch(addTodoList(newId, title))
+    }, [dispatch])
 
     return (
         <div>
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container justifyContent={"center"} style={{padding: "20px"}}>
-                    <AddItemForm label={'Name Todolist'} addTask={addTodoList}/>
+                    <AddItemForm label={'Name Todolist'} addTask={addTodoListHandler}/>
                 </Grid>
                 <Grid container spacing={3}>
-
-                    {todoLists.map(m => {
+                    {todoLists.map(tl => {
 
                         return (
-                            <Grid key={m.id} item>
+                            <Grid key={tl.id} item>
                                 <Paper style={{padding: "10px"}}>
-                                    <Todolist title={m.title}
-                                              todolistId={m.id}
-                                              filter={m.filter}
-                                              key={m.id}
+                                    <Todolist todolistId={tl.id}
                                     />
-
                                 </Paper>
                             </Grid>
                         )
                     })}
                 </Grid>
-
             </Container>
         </div>
     );
-}
+})
 
-export default App;
