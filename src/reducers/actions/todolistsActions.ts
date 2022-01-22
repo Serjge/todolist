@@ -2,10 +2,10 @@ import {FilterValuesType} from "../TodolistsReducer";
 import {v1} from "uuid";
 
 export enum TODOLIST_ACTIONS_TYPE {
-    REMOVE = "REMOVE",
-    ADD = "ADD",
-    CHANGE_FILTER = "CHANGE_FILTER",
-    RENAME = "RENAME",
+    REMOVE = "Todolist/REMOVE",
+    ADD = "Todolist/ADD",
+    CHANGE_FILTER = "Todolist/CHANGE_FILTER",
+    RENAME = "Todolist/RENAME",
 }
 
 export type TodoActionType = changeFilterTodolistType | removeTodolistType | addTodoListType | renameTodoListType

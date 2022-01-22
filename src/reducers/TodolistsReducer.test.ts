@@ -1,49 +1,33 @@
-import {TasksStateType} from "../App";
-import {TasksReducer} from "./TasksReducer";
+import {TodoListsReducer, TodoListsType} from "./TodolistsReducer";
+import {TODOLIST_ACTIONS_TYPE} from "./actions/todolistsActions";
 
 
-const tasks: TasksStateType = {
-    ['1']: [
-        {id: '1', title: "HTML&CSS", isDone: true},
-        {id: '2', title: "JS", isDone: true},
-        {id: '3', title: "ReactJS", isDone: false},
-        {id: '4', title: "Rest API", isDone: false},
-        {id: '5', title: "GraphQL", isDone: false},
-    ],
+const todolist: TodoListsType[] = [
+    {id: '1', title: 'What to learn', filter: 'all'},
+    {id: '2', title: 'What to buy', filter: 'all'},
+]
 
-}
-
-test('remove task', ()=>{
-    const removeTask = TasksReducer(tasks,{type:"REMOVE-TASK", payload:{ todolistId: '1', taskId: '2'}})
-    expect(removeTask['1'][1].id).toBe('3')
-    expect(removeTask['1'].length).toBe(4)
+test('remove todolist', ()=>{
+    const removeTodolist = TodoListsReducer(todolist,{type:TODOLIST_ACTIONS_TYPE.REMOVE, payload:{ todolistId: '1'}})
+    expect(removeTodolist[0].id).toBe('2')
+    expect(removeTodolist.length).toBe(1)
 })
 
-test('change isDone task', ()=>{
-    const isDoneTask = TasksReducer(tasks,{type:"CHANGE-STATUS-TASK", payload:{ todolistId: '1', taskId: '2', isDone: false}})
-    expect(isDoneTask['1'][1].isDone).toBe( false)
-    expect(isDoneTask['1'][1].title).toBe( 'JS')
+test('change filter todolist', ()=>{
+    const filterTodolist = TodoListsReducer(todolist,{type:TODOLIST_ACTIONS_TYPE.CHANGE_FILTER, payload:{ todolistId: '1', filter: "active"}})
+    expect(filterTodolist[0].filter).toBe( "active")
+    expect(filterTodolist[1].filter).toBe( 'all')
 })
 
-test('update title task', ()=>{
-    const updateTask = TasksReducer(tasks,{type:"RENAME-TASK", payload:{ todolistId: '1', taskId: '2', title: 'Test'}})
-    expect(updateTask['1'][1].title).toBe( 'Test')
-    expect(updateTask['1'][1].isDone).toBe( true)
+test('update title todolist', ()=>{
+    const updateTask = TodoListsReducer(todolist,{type:TODOLIST_ACTIONS_TYPE.RENAME, payload:{ todolistId: '1',  title: 'Test'}})
+    expect(updateTask[0].title).toBe( 'Test')
+    expect(updateTask[1].title).toBe( 'What to buy')
 })
 
-test('add todolist task', ()=>{
-    const addTodolistTask = TasksReducer(tasks,{type:"ADD-TODOLIST-TASKS", payload:{ todolistId: '2'}})
-    expect(addTodolistTask['2'].length).toBe( 0)
-})
-
-test('remove tasks', ()=>{
-    const removeTasks = TasksReducer(tasks,{type:"REMOVE-TASKS", payload:{ todolistId: '1'}})
-    expect(removeTasks['1']).toBe( undefined)
-})
-
-test('add task', ()=>{
-    const addTask = TasksReducer(tasks,{type:"ADD-TASK", payload:{ todolistId: '1', title: 'Test'}})
-    expect(addTask['1'][0].title).toBe( 'Test')
-    expect(addTask['1'][0].isDone).toBe( false)
-    expect(addTask['1'].length).toBe( 6)
+test('add todolist', ()=>{
+    const addTodolist = TodoListsReducer(todolist,{type:TODOLIST_ACTIONS_TYPE.ADD, payload:{ todolistId: '1', title: 'Test'}})
+    expect(addTodolist[0].title).toBe( 'Test')
+    expect(addTodolist[0].filter).toBe( 'all')
+    expect(addTodolist.length).toBe( 3)
 })

@@ -1,10 +1,10 @@
 import {addTodoListType, removeTodolistType} from "./todolistsActions";
 
 export enum TASK_ACTIONS_TYPE {
-    REMOVE = "REMOVE",
-    CHANGE_STATUS = "CHANGE_STATUS",
-    RENAME = "RENAME",
-    ADD = "ADD",
+    REMOVE = "Task/REMOVE",
+    CHANGE_STATUS = "Task/CHANGE_STATUS",
+    RENAME = "Task/RENAME",
+    ADD = "Task/ADD",
 }
 
 
