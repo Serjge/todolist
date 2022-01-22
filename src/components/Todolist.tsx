@@ -6,15 +6,10 @@ import Checkbox from '@mui/material/Checkbox';
 import {Delete} from '@mui/icons-material';
 import {useDispatch, useSelector} from "react-redux";
 import {rootReducerType} from "../store/store";
-import {changeFilterAC, FilterValuesType, removeTodolistAC, renameTodoListAC} from "../reducers/TodolistsReducer";
-import {
-    addTaskAC,
-    changeStatusAC,
-    removeTaskAC,
-    removeTasksAC,
-    renameTaskAC,
-    TasksStateType
-} from "../reducers/TasksReducer";
+import { FilterValuesType} from "../reducers/TodolistsReducer";
+import { TasksStateType} from "../reducers/TasksReducer";
+import {addTask, changeStatusTask, removeTask, renameTask} from '../action/taskAction';
+import { changeFilterTodolist, removeTodolist, renameTodoList } from '../action/todolistAction';
 
 type TodoListPropsType = {
     title: string
@@ -40,36 +35,35 @@ export function Todolist({
         tasksForTodolist = tasks[todolistId].filter(t => t.isDone);
     }
 
-    const addTask = (title: string) => dispatch(addTaskAC(todolistId, title))
-    const allClickHandler = () => dispatch(changeFilterAC(todolistId, "all"));
-    const activeClickHandler = () => dispatch(changeFilterAC(todolistId, "active"));
-    const completedClickHandler = () => dispatch(changeFilterAC(todolistId, "completed"));
+    const addTaskHandler = (title: string) => dispatch(addTask(todolistId, title))
+    const allClickHandler = () => dispatch(changeFilterTodolist(todolistId, "all"));
+    const activeClickHandler = () => dispatch(changeFilterTodolist(todolistId, "active"));
+    const completedClickHandler = () => dispatch(changeFilterTodolist(todolistId, "completed"));
 
     const deleteTodoList = () => {
-        dispatch(removeTodolistAC(todolistId))
-        dispatch(removeTasksAC(todolistId))
+        dispatch(removeTodolist(todolistId))
     }
 
-    const renameTodoList = (title: string) => {
-        dispatch(renameTodoListAC(todolistId, title))
+    const renameTodoListHandler = (title: string) => {
+        dispatch(renameTodoList(todolistId, title))
     }
 
     return <div>
         <h3 style={{display: 'flex', justifyContent: 'space-between'}}>
-            <EditableSpan title={title} rename={renameTodoList}/>
+            <EditableSpan title={title} rename={renameTodoListHandler}/>
             <IconButton onClick={deleteTodoList} aria-label="delete">
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm label={'Name task'} addTask={addTask}/>
+        <AddItemForm label={'Name task'} addTask={addTaskHandler}/>
         <div>
             {
                 tasksForTodolist.map(t => {
-                    const deleteTask = () => dispatch(removeTaskAC(todolistId, t.id))
+                    const deleteTask = () => dispatch(removeTask(todolistId, t.id))
                     const isDoneTask = (e: ChangeEvent<HTMLInputElement>) => {
-                        dispatch(changeStatusAC(todolistId, t.id, e.currentTarget.checked))
+                        dispatch(changeStatusTask(todolistId, t.id, e.currentTarget.checked))
                     }
-                    const renameTask = (title: string) => dispatch(renameTaskAC(todolistId, t.id, title))
+                    const renameTaskHandler = (title: string) => dispatch(renameTask(todolistId, t.id, title))
 
 
                     return <div style={{height: '60px'}} key={t.id} className={t.isDone ? "is-done" : ""}>
@@ -81,7 +75,7 @@ export function Todolist({
                                 checked={t.isDone}/>
                             </Grid>
                             <Grid item>
-                                <EditableSpan rename={renameTask} title={t.title}/>
+                                <EditableSpan rename={renameTaskHandler} title={t.title}/>
                             </Grid>
                             <Grid item>
                                 <IconButton onClick={deleteTask} aria-label="delete">
