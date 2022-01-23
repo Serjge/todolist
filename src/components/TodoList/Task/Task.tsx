@@ -5,7 +5,7 @@ import {Grid, IconButton} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "../../common/EditableSpan";
 import {Delete} from "@mui/icons-material";
-import {rootReducerType} from "../../../store/store";
+import {rootReducerType, useAppSelector} from "../../../store/store";
 import {changeStatus, removeTask, renameTask} from "../../../reducers/actions/tasksActions";
 
 
@@ -15,24 +15,19 @@ type TaskPropsType = {
 }
 export const Task = React.memo(({id, todolistId}: TaskPropsType) => {
 
-
-// const title =  useAppSelector<string>(state => state.tasks[todolistId]
-//     .filter(t => t.id === id)[0].title)
-
-
-    const {isDone,title} = useSelector<rootReducerType, TaskType>(state => state.tasks[todolistId].filter(t => t.id === id)[0]    )
+    const {title, isDone} = useAppSelector<TaskType>(state => state.tasks[todolistId]
+        .filter(t => t.id === id)[0])
 
     const dispatch = useDispatch()
-
 
     console.log('task ' + title)
 
     const deleteTask = useCallback(() => dispatch(removeTask(todolistId, id)),
-        [todolistId, id,dispatch ])
+        [todolistId, id, dispatch])
 
     const isDoneTask = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(changeStatus(todolistId, id, e.currentTarget.checked))
-    }, [dispatch,todolistId, id])
+    }, [dispatch, todolistId, id])
 
     const renameTaskHandler = useCallback((title: string) => dispatch(renameTask(todolistId, id, title)), [todolistId, id, dispatch])
 
