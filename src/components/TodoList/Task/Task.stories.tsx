@@ -11,17 +11,12 @@ export default {
     ]
 } as ComponentMeta<typeof Task>;
 
-const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
+const Template: ComponentStory<typeof Task> = (args) => <Task id={'01'} todolistId={'todolistID1'} />;
 
 export const Primary = Template.bind({ });
 
-Primary.args = {
-    id: '01',
-    todolistId: 'todolistID1',
-
-};
-Primary.args = {
-    id: '02',
-    todolistId: 'todolistID2',
-
-};
+// Primary.args = {
+//     id: '01',
+//     todolistId: 'todolistID1',
+//
+// };

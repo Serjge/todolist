@@ -1,8 +1,7 @@
 import React, {useCallback} from 'react';
 import {AddItemForm} from "../common/AddItemForm";
 import {EditableSpan} from "../common/EditableSpan";
-import {Button, IconButton} from "@mui/material";
-import {Delete} from '@mui/icons-material';
+
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../store/store";
 import {TodoListsType,} from "../../reducers/TodolistsReducer";
@@ -10,6 +9,9 @@ import {TaskType} from "../../reducers/TasksReducer";
 import {Task} from "./Task/Task";
 import {changeFilterTodolist, removeTodolist, renameTodoList} from "../../reducers/actions/todolistsActions";
 import {addTask} from "../../reducers/actions/tasksActions";
+import {Button, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import {blue} from "@material-ui/core/colors";
 
 
 type TodoListPropsType = {
@@ -21,7 +23,7 @@ export const Todolist = React.memo(({todolistId}: TodoListPropsType) => {
 
     let tasks = useAppSelector<TaskType[]>(state => state.tasks[todolistId])
 
-    const {filter , title} = useAppSelector<TodoListsType>(state => state.todoList.filter(td => td.id === todolistId)[0])
+    const {filter, title} = useAppSelector<TodoListsType>(state => state.todoList.filter(td => td.id === todolistId)[0])
 
     let dispatch = useDispatch()
 
@@ -45,7 +47,7 @@ export const Todolist = React.memo(({todolistId}: TodoListPropsType) => {
     }, [todolistId, dispatch])
 
     const renameTodoListHandler = useCallback(
-            (title: string) => {
+        (title: string) => {
             dispatch(renameTodoList(todolistId, title))
         },
         [todolistId, dispatch])
@@ -71,17 +73,22 @@ export const Todolist = React.memo(({todolistId}: TodoListPropsType) => {
         </div>
 
         <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Button style={{margin: '5px'}} onClick={allClickHandler}
+            <Button style={{margin: '5px', backgroundColor: filter === 'all' ? blue[800] : ''}}
+                    onClick={allClickHandler}
                     variant={filter === 'all' ? "contained" : 'outlined'}
+
                     size={"small"}
             >All
             </Button>
-            <Button style={{margin: '5px'}} onClick={activeClickHandler}
+            <Button style={{margin: '5px', backgroundColor: filter === 'active' ? blue[800] : ''}}
+                    onClick={activeClickHandler}
+
                     variant={filter === 'active' ? "contained" : 'outlined'}
                     size={"small"}
             >Active
             </Button>
-            <Button style={{margin: '5px'}} onClick={completedClickHandler}
+            <Button style={{margin: '5px', backgroundColor: filter === 'completed' ? blue[800] : ''}}
+                    onClick={completedClickHandler}
                     variant={filter === 'completed' ? "contained" : 'outlined'}
                     size={"small"}
             >Completed

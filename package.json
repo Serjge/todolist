@@ -1,13 +1,10 @@
 {
-  "name": "my_todo_list",
+  "name": "it-incubator-todolist-ts",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@mui/icons-material": "^5.2.5",
-    "@mui/material": "^5.2.5",
-    "@testing-library/dom": "^8.11.1",
+    "@material-ui/core": "^4.10.1",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,25 +12,22 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/react-redux": "^7.1.21",
-    "@types/uuid": "^8.3.1",
+    "@types/react-redux": "^7.1.16",
+    "@types/uuid": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
+    "react-redux": "^7.2.3",
     "react-scripts": "4.0.3",
-    "redux": "^4.1.2",
+    "redux": "^4.0.5",
     "typescript": "^4.1.2",
-    "uuid": "^8.3.2",
+    "uuid": "^8.0.0",
     "web-vitals": "^1.0.1"
   },
-  "homepage": "https://serjge.github.io/todolist",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -69,10 +63,8 @@
     "@storybook/addon-actions": "^6.4.14",
     "@storybook/addon-essentials": "^6.4.14",
     "@storybook/addon-links": "^6.4.14",
-    "@storybook/addon-storysource": "^6.4.14",
     "@storybook/node-logger": "^6.4.14",
     "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.14",
-    "gh-pages": "^3.2.3"
+    "@storybook/react": "^6.4.14"
   }
 }

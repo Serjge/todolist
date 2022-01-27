@@ -1,6 +1,7 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import TextField from "@material-ui/core/TextField";
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {Button} from "@material-ui/core";
+import { blue } from "@material-ui/core/colors";
 
 type AddItemFormPropsType = {
     addTask: (title: string) => void
@@ -43,7 +44,8 @@ export const AddItemForm = React.memo(({addTask, label}: AddItemFormPropsType) =
             />
             <Button style={{
                 marginLeft: '10px', maxWidth: '40px',
-                maxHeight: '40px', minWidth: '40px', minHeight: '40px'
+                maxHeight: '40px', minWidth: '40px', minHeight: '40px',
+                backgroundColor: blue[800]
             }}
                     variant="contained" onClick={addTaskHandler} disabled={error}>+</Button>
         </div>

@@ -3,12 +3,12 @@ import './App.css';
 import {Todolist} from './components/TodoList/Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from "./components/common/AddItemForm";
-import {Container, Grid, Paper} from "@mui/material";
 import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar";
 import {TodoListsType} from "./reducers/TodolistsReducer";
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "./store/store";
 import { addTodoList } from './reducers/actions/todolistsActions';
+import {Container, Grid, Paper} from "@material-ui/core";
 
 
 export const App = React.memo(() => {

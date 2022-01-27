@@ -1,13 +1,14 @@
 import React, {ChangeEvent, useCallback} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {TaskType} from "../../../reducers/TasksReducer";
-import {Grid, IconButton} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import {EditableSpan} from "../../common/EditableSpan";
-import {Delete} from "@mui/icons-material";
-import {rootReducerType, useAppSelector} from "../../../store/store";
-import {changeStatus, removeTask, renameTask} from "../../../reducers/actions/tasksActions";
 
+import {EditableSpan} from "../../common/EditableSpan";
+
+import {useAppSelector} from "../../../store/store";
+import {changeStatus, removeTask, renameTask} from "../../../reducers/actions/tasksActions";
+import {Checkbox, Grid, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+import {blue, pink} from "@material-ui/core/colors";
 
 type TaskPropsType = {
     id: string
@@ -39,7 +40,9 @@ export const Task = React.memo(({id, todolistId}: TaskPropsType) => {
                         inputProps={{'aria-label': 'controlled'}}
                         size={"small"}
                         onChange={isDoneTask}
-                        checked={isDone}/>
+                        checked={isDone}
+                        style={{color: blue[800]}}
+                    />
                 </Grid>
                 <Grid item>
                     <EditableSpan rename={renameTaskHandler} title={title} label={'Name Task'}/>

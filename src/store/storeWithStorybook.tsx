@@ -1,7 +1,6 @@
 import {combineReducers, createStore} from "redux";
 import {TasksReducer} from "../reducers/TasksReducer";
 import {TodoListsReducer} from "../reducers/TodolistsReducer";
-import {v1} from "uuid";
 import {rootReducerType} from "./store";
 import {Provider} from "react-redux";
 

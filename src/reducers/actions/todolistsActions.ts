@@ -15,8 +15,6 @@ export type removeTodolistType = ReturnType<typeof removeTodolist>
 export type addTodoListType = ReturnType<typeof addTodoList>
 export type renameTodoListType = ReturnType<typeof renameTodoList>
 
-
-
 export const changeFilterTodolist = (todolistId: string, filter: FilterValuesType) => {
     return {
         type: TODOLIST_ACTIONS_TYPE.CHANGE_FILTER,

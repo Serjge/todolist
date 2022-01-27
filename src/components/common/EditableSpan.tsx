@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import TextField from "@mui/material/TextField";
+import {TextField} from "@material-ui/core";
+
 
 type EditableSpanPropsType = {
     title: string
@@ -54,7 +55,7 @@ export const EditableSpan = React.memo( ({title, rename, label}: EditableSpanPro
                          onBlur={activeViewMode}
                          autoFocus
                          onKeyPress={onKeyPress}
-                         sx={{ width: '170px' }}
+                         style={{ width: '170px' }}
             />
 
     )
