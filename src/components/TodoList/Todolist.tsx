@@ -1,100 +1,74 @@
-import React, {useCallback} from 'react';
-import {AddItemForm} from "../common/AddItemForm";
-import {EditableSpan} from "../common/EditableSpan";
+import { memo, useCallback } from 'react';
 
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "../../store/store";
-import {TodoListsType,} from "../../reducers/TodolistsReducer";
-import {TaskType} from "../../reducers/TasksReducer";
-import {Task} from "./Task/Task";
-import {changeFilterTodolist, removeTodolist, renameTodoList} from "../../reducers/actions/todolistsActions";
-import {addTask} from "../../reducers/actions/tasksActions";
-import {Button, IconButton} from "@material-ui/core";
-import {Delete} from "@material-ui/icons";
-import {blue} from "@material-ui/core/colors";
+import { IconButton } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { AddItemForm, ButtonFilter, EditableSpan, Task } from 'components';
+import { FIRST_INDEX } from 'const';
+import { addTask, removeTodolist, renameTodoList } from 'store/actions';
+import { selectTodoListArray } from 'store/selectors';
+import { selectTasks } from 'store/selectors/selectTasks';
 
 type TodoListPropsType = {
-    todolistId: string
-}
+  todolistId: string;
+};
 
-export const Todolist = React.memo(({todolistId}: TodoListPropsType) => {
-    console.log('render Todolist')
+export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
+  let tasks = useSelector(selectTasks)[todolistId];
 
-    let tasks = useAppSelector<TaskType[]>(state => state.tasks[todolistId])
+  const { title, filter } = useSelector(selectTodoListArray).filter(
+    ({ id }) => id === todolistId,
+  )[FIRST_INDEX];
 
-    const {filter, title} = useAppSelector<TodoListsType>(state => state.todoList.filter(td => td.id === todolistId)[0])
+  const dispatch = useDispatch();
 
-    let dispatch = useDispatch()
+  if (filter === 'active') {
+    tasks = tasks.filter(t => !t.isDone);
+  }
+  if (filter === 'completed') {
+    tasks = tasks.filter(t => t.isDone);
+  }
 
-    if (filter === "active") {
-        tasks = tasks.filter(t => !t.isDone);
-    }
-    if (filter === "completed") {
-        tasks = tasks.filter(t => t.isDone);
-    }
+  const addTaskHandler = useCallback(
+    (titleTask: string) => dispatch(addTask(todolistId, titleTask)),
+    [todolistId, dispatch],
+  );
 
-    const addTaskHandler = useCallback((title: string) => dispatch(addTask(todolistId, title)), [todolistId, dispatch])
+  const onDeleteTodoListClick = useCallback(() => {
+    dispatch(removeTodolist(todolistId));
+  }, [todolistId, dispatch]);
 
-    const allClickHandler = useCallback(() => dispatch(changeFilterTodolist(todolistId, "all")), [todolistId, dispatch]);
+  const renameTodoListHandler = useCallback(
+    (titleTodolist: string) => {
+      dispatch(renameTodoList(todolistId, titleTodolist));
+    },
+    [todolistId, dispatch],
+  );
 
-    const activeClickHandler = useCallback(() => dispatch(changeFilterTodolist(todolistId, "active")), [todolistId, dispatch])
-
-    const completedClickHandler = useCallback(() => dispatch(changeFilterTodolist(todolistId, "completed")), [todolistId, dispatch])
-
-    const deleteTodoList = useCallback(() => {
-        dispatch(removeTodolist(todolistId))
-    }, [todolistId, dispatch])
-
-    const renameTodoListHandler = useCallback(
-        (title: string) => {
-            dispatch(renameTodoList(todolistId, title))
-        },
-        [todolistId, dispatch])
-
-    return <div>
-        <h3 style={{display: 'flex', justifyContent: 'space-between'}}>
-            <EditableSpan title={title} rename={renameTodoListHandler} label={'Name Todolist'}/>
-            <IconButton onClick={deleteTodoList} aria-label="delete">
-                <Delete/>
-            </IconButton>
-        </h3>
-        <AddItemForm label={'Name task'} addTask={addTaskHandler}/>
-        <div>
-            {
-                tasks.map(t => {
-                        return <Task
-                            id={t.id}
-                            todolistId={todolistId}
-                            key={t.id}/>
-                    }
-                )
-            }
-        </div>
-
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Button style={{margin: '5px', backgroundColor: filter === 'all' ? blue[800] : ''}}
-                    onClick={allClickHandler}
-                    variant={filter === 'all' ? "contained" : 'outlined'}
-
-                    size={"small"}
-            >All
-            </Button>
-            <Button style={{margin: '5px', backgroundColor: filter === 'active' ? blue[800] : ''}}
-                    onClick={activeClickHandler}
-
-                    variant={filter === 'active' ? "contained" : 'outlined'}
-                    size={"small"}
-            >Active
-            </Button>
-            <Button style={{margin: '5px', backgroundColor: filter === 'completed' ? blue[800] : ''}}
-                    onClick={completedClickHandler}
-                    variant={filter === 'completed' ? "contained" : 'outlined'}
-                    size={"small"}
-            >Completed
-            </Button>
-        </div>
+  return (
+    <div>
+      <h3 style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <EditableSpan
+          title={title}
+          rename={renameTodoListHandler}
+          label="Name Todolist"
+        />
+        <IconButton onClick={onDeleteTodoListClick} aria-label="delete">
+          <Delete />
+        </IconButton>
+      </h3>
+      <AddItemForm label="Name task" addTask={addTaskHandler} />
+      <div>
+        {tasks.map(({ id: taskId }) => (
+          <Task id={taskId} todolistId={todolistId} key={taskId} />
+        ))}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <ButtonFilter todolistId={todolistId} title="All" filterName="all" />
+        <ButtonFilter todolistId={todolistId} title="Completed" filterName="completed" />
+        <ButtonFilter todolistId={todolistId} title="Active" filterName="active" />
+      </div>
     </div>
-})
-
-
+  );
+});

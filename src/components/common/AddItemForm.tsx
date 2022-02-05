@@ -1,53 +1,63 @@
-import TextField from "@material-ui/core/TextField";
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "@material-ui/core";
-import { blue } from "@material-ui/core/colors";
+import { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
+
+import { Button, TextField } from '@material-ui/core';
 
 type AddItemFormPropsType = {
-    addTask: (title: string) => void
-    label: string
-}
+  addTask: (title: string) => void;
+  label: string;
+};
 
-export const AddItemForm = React.memo(({addTask, label}: AddItemFormPropsType) => {
-    let [title, setTitle] = useState("")
-    let [error, setError] = useState<boolean>(false)
-    console.log(`AddItemForm ${label}`)
-    const addTaskHandler = () => {
-        if (title.trim() !== "") {
-            addTask(title.trim());
-            setTitle("");
-        } else {
-            setError(true);
-        }
-    }
+export const AddItemForm = memo(({ addTask, label }: AddItemFormPropsType) => {
+  const [title, setTitle] = useState('');
+  const [error, setError] = useState<boolean>(false);
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
+  const addTaskHandler = (): void => {
+    if (title.trim() !== '') {
+      addTask(title.trim());
+      setTitle('');
+    } else {
+      setError(true);
     }
+  };
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        error && setError(false);
-        if (e.key === 'Enter') {
-            addTaskHandler();
-        }
+  const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+    setTitle(e.currentTarget.value);
+  };
+
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (error) {
+      setError(false);
+      if (e.key === 'Enter') {
+        addTaskHandler();
+      }
     }
-    return (
-        <div>
-            <TextField
-                       label={error ? "Title is required" : label}
-                       error={error}
-                       variant="outlined"
-                       value={title}
-                       size="small"
-                       onChange={onChangeHandler}
-                       onKeyPress={onKeyPressHandler}
-            />
-            <Button style={{
-                marginLeft: '10px', maxWidth: '40px',
-                maxHeight: '40px', minWidth: '40px', minHeight: '40px',
-                backgroundColor: blue[800]
-            }}
-                    variant="contained" onClick={addTaskHandler} disabled={error}>+</Button>
-        </div>
-    )
-})
+  };
+  return (
+    <div>
+      <TextField
+        label={error ? 'Title is required' : label}
+        error={error}
+        variant="outlined"
+        value={title}
+        size="small"
+        onChange={onChangeTitleHandler}
+        onKeyPress={onKeyPressHandler}
+      />
+      <Button
+        style={{
+          marginLeft: '10px',
+          maxWidth: '40px',
+          maxHeight: '40px',
+          minWidth: '40px',
+          minHeight: '40px',
+          backgroundColor: '#3f51b5',
+        }}
+        variant="contained"
+        onClick={addTaskHandler}
+        disabled={error}
+      >
+        +
+      </Button>
+    </div>
+  );
+});

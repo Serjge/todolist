@@ -1,15 +1,14 @@
-import {TasksReducer} from "../reducers/TasksReducer";
-import {TodoListsReducer} from "../reducers/TodolistsReducer";
-import {combineReducers, createStore} from "redux";
-import {TypedUseSelectorHook, useSelector} from "react-redux";
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
+import { combineReducers, createStore } from 'redux';
 
-let rootReducer=combineReducers({
-    tasks: TasksReducer,
-    todoList: TodoListsReducer
-})
+import { TasksReducer, TodoListsReducer } from 'store/reducers';
 
-export type rootReducerType = ReturnType<typeof rootReducer>
+const rootReducer = combineReducers({
+  tasks: TasksReducer,
+  todoList: TodoListsReducer,
+});
 
-export let store=createStore(rootReducer)
+export type rootReducerType = ReturnType<typeof rootReducer>;
 
-export let useAppSelector: TypedUseSelectorHook<rootReducerType> = useSelector
+export const store = createStore(rootReducer);
+export const useAppSelector: TypedUseSelectorHook<rootReducerType> = useSelector;
