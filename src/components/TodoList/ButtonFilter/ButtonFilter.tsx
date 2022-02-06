@@ -1,6 +1,6 @@
 import { memo, ReactElement, useCallback } from 'react';
 
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FIRST_INDEX } from 'const';
@@ -21,15 +21,17 @@ export const ButtonFilter = memo(
     )[FIRST_INDEX];
 
     const dispatch = useDispatch();
+
     const onClickHandler = useCallback(
       () => dispatch(changeFilterTodolist(todolistId, filterName)),
       [todolistId, dispatch],
     );
+
     return (
       <Button
-        style={{ margin: '5px', backgroundColor: filter === filterName ? '#3f51b5' : '' }}
+        style={{ margin: '5px' }}
         onClick={onClickHandler}
-        variant={filter === 'all' ? 'contained' : 'outlined'}
+        variant={filter === filterName ? 'contained' : 'outlined'}
         size="small"
       >
         {title}

@@ -1,8 +1,10 @@
-import { memo, useCallback } from 'react';
+import { memo, ReactElement, useCallback } from 'react';
 
-import { IconButton } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Delete } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+
+import style from './TodoList.module.css';
 
 import { AddItemForm, ButtonFilter, EditableSpan, Task } from 'components';
 import { FIRST_INDEX } from 'const';
@@ -46,9 +48,21 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
     [todolistId, dispatch],
   );
 
+  const ZERO_ARRAY_LENGTH = 0;
+
+  const TasksRender = (): ReactElement | ReactElement[] => {
+    if (tasks.length === ZERO_ARRAY_LENGTH) {
+      return <span className={style.notFont}>Not fount task</span>;
+    }
+
+    return tasks.map(({ id: taskId }) => (
+      <Task id={taskId} todolistId={todolistId} key={taskId} />
+    ));
+  };
+
   return (
     <div>
-      <h3 style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <h3 className={style.title}>
         <EditableSpan
           title={title}
           rename={renameTodoListHandler}
@@ -59,12 +73,8 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
         </IconButton>
       </h3>
       <AddItemForm label="Name task" addTask={addTaskHandler} />
-      <div>
-        {tasks.map(({ id: taskId }) => (
-          <Task id={taskId} todolistId={todolistId} key={taskId} />
-        ))}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div>{TasksRender()}</div>
+      <div className={style.wrapperButtons}>
         <ButtonFilter todolistId={todolistId} title="All" filterName="all" />
         <ButtonFilter todolistId={todolistId} title="Completed" filterName="completed" />
         <ButtonFilter todolistId={todolistId} title="Active" filterName="active" />

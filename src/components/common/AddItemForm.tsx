@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 
 type AddItemFormPropsType = {
   addTask: (title: string) => void;
@@ -50,7 +50,6 @@ export const AddItemForm = memo(({ addTask, label }: AddItemFormPropsType) => {
           maxHeight: '40px',
           minWidth: '40px',
           minHeight: '40px',
-          backgroundColor: '#3f51b5',
         }}
         variant="contained"
         onClick={addTaskHandler}

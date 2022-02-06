@@ -1,7 +1,7 @@
 import { ChangeEvent, memo, useCallback } from 'react';
 
-import { Checkbox, Grid, IconButton } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Delete } from '@mui/icons-material';
+import { Checkbox, Grid, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { EditableSpan } from 'components';
@@ -46,7 +46,6 @@ export const Task = memo(({ id, todolistId }: TaskPropsType) => {
             size="small"
             onChange={isDoneTask}
             checked={isDone}
-            style={{ color: '#3f51b5' }}
           />
         </Grid>
         <Grid item>

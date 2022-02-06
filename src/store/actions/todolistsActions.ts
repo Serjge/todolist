@@ -17,6 +17,7 @@ export const changeFilterTodolist = (todolistId: string, filter: FilterValuesTyp
       filter,
     },
   } as const);
+
 export const removeTodolist = (todolistId: string) =>
   ({
     type: TODOLIST_ACTIONS.REMOVE,
@@ -24,7 +25,8 @@ export const removeTodolist = (todolistId: string) =>
       todolistId,
     },
   } as const);
-export const addTodoList = (todolistId: string, title: string) =>
+
+export const addTodoList = (title: string) =>
   ({
     type: TODOLIST_ACTIONS.ADD,
     payload: {
@@ -32,6 +34,7 @@ export const addTodoList = (todolistId: string, title: string) =>
       title,
     },
   } as const);
+
 export const renameTodoList = (todolistId: string, title: string) =>
   ({
     type: TODOLIST_ACTIONS.RENAME,
