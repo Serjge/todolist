@@ -1,5 +1,14 @@
+import { TaskPriorities, TaskStatuses } from 'enum';
+
 export type TaskType = {
-  id: string;
+  description: string;
   title: string;
-  isDone: boolean;
+  status: TaskStatuses;
+  priority: TaskPriorities;
+  startDate: string;
+  deadline: string;
+  id: string;
+  todoListId: string;
+  order: number;
+  addedDate: string;
 };

@@ -1,5 +1,3 @@
-import { v1 } from 'uuid';
-
 import { TASK_ACTIONS, TODOLIST_ACTIONS } from 'store/actions';
 import { TasksType } from 'types';
 import { TasksActionType } from 'types/actions';
@@ -10,20 +8,22 @@ export const TasksReducer = (
   state = initialState,
   action: TasksActionType,
 ): TasksType => {
+  const copyState = { ...state };
   switch (action.type) {
     case TASK_ACTIONS.ADD:
-      return {
-        ...state,
-        [action.payload.todolistId]: [
-          { id: v1(), title: action.payload.title, isDone: false },
-          ...state[action.payload.todolistId],
-        ],
-      };
+      return state;
+    // {
+    //     ...state,
+    //     [action.payload.todolistId]: [
+    //       { id: v1(), title: action.payload.title, isDone:  },
+    //       ...state[action.payload.todolistId],
+    //     ],
+    //   };
     case TASK_ACTIONS.REMOVE:
       return {
         ...state,
         [action.payload.todolistId]: state[action.payload.todolistId].filter(
-          t => t.id !== action.payload.taskId,
+          ({ id }) => id !== action.payload.taskId,
         ),
       };
     case TASK_ACTIONS.CHANGE_STATUS:
@@ -41,12 +41,15 @@ export const TasksReducer = (
         ),
       };
     case TODOLIST_ACTIONS.REMOVE:
-      // const newState = { ...state };
-      // delete newState[action.payload.todolistId];
-      // return newState;
-      return state;
+      delete copyState[action.payload.todolistId];
+      return copyState;
+    case TODOLIST_ACTIONS.SET:
+      action.payload.todolistData.forEach(tl => {
+        copyState[tl.id] = [];
+      });
+      return copyState;
     case TODOLIST_ACTIONS.ADD:
-      return { ...state, [action.payload.todolistId]: [] };
+      return { ...state, [action.payload.todoList.id]: [] };
     default:
       return state;
   }

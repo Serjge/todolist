@@ -4,6 +4,7 @@ export {
   addTodoList,
   renameTodoList,
   TODOLIST_ACTIONS,
+  setTodoList,
 } from 'store/actions/todolistsActions';
 
 export {

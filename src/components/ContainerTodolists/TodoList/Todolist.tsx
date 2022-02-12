@@ -4,33 +4,34 @@ import { Delete } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import style from './TodoList.module.css';
-
 import { AddItemForm, ButtonFilter, EditableSpan, Task } from 'components';
+import style from 'components/ContainerTodolists/TodoList/TodoList.module.css';
 import { FIRST_INDEX } from 'const';
-import { addTask, removeTodolist, renameTodoList } from 'store/actions';
+import { TaskStatuses } from 'enum';
+import { addTask } from 'store/actions';
 import { selectTodoListArray } from 'store/selectors';
 import { selectTasks } from 'store/selectors/selectTasks';
+import { removeTodoListTC, renameTodoListTC } from 'store/thunks';
 
 type TodoListPropsType = {
   todolistId: string;
 };
 
 export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
-  let tasks = useSelector(selectTasks)[todolistId];
+  const tasks = useSelector(selectTasks)[todolistId];
 
-  const { title, filter } = useSelector(selectTodoListArray).filter(
+  const { title } = useSelector(selectTodoListArray).filter(
     ({ id }) => id === todolistId,
   )[FIRST_INDEX];
 
   const dispatch = useDispatch();
 
-  if (filter === 'active') {
-    tasks = tasks.filter(t => !t.isDone);
-  }
-  if (filter === 'completed') {
-    tasks = tasks.filter(t => t.isDone);
-  }
+  // if (filter === 'active') {
+  //   tasks = tasks.filter(t => !t.isDone);
+  // }
+  // if (filter === 'completed') {
+  //   tasks = tasks.filter(t => t.isDone);
+  // }
 
   const addTaskHandler = useCallback(
     (titleTask: string) => dispatch(addTask(todolistId, titleTask)),
@@ -38,12 +39,12 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
   );
 
   const onDeleteTodoListClick = useCallback(() => {
-    dispatch(removeTodolist(todolistId));
+    dispatch(removeTodoListTC(todolistId));
   }, [todolistId, dispatch]);
 
   const renameTodoListHandler = useCallback(
     (titleTodolist: string) => {
-      dispatch(renameTodoList(todolistId, titleTodolist));
+      dispatch(renameTodoListTC(todolistId, titleTodolist));
     },
     [todolistId, dispatch],
   );
@@ -55,9 +56,7 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
       return <span className={style.notFont}>Not fount task</span>;
     }
 
-    return tasks.map(({ id: taskId }) => (
-      <Task id={taskId} todolistId={todolistId} key={taskId} />
-    ));
+    return tasks.map(({ id }) => <Task taskId={id} todolistId={todolistId} key={id} />);
   };
 
   return (
@@ -75,9 +74,22 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
       <AddItemForm label="Name task" addTask={addTaskHandler} />
       <div>{TasksRender()}</div>
       <div className={style.wrapperButtons}>
-        <ButtonFilter todolistId={todolistId} title="All" filterName="all" />
-        <ButtonFilter todolistId={todolistId} title="Completed" filterName="completed" />
-        <ButtonFilter todolistId={todolistId} title="Active" filterName="active" />
+        <ButtonFilter todolistId={todolistId} title="All" filterName={TaskStatuses.New} />
+        <ButtonFilter
+          todolistId={todolistId}
+          title="Completed"
+          filterName={TaskStatuses.InProgress}
+        />
+        <ButtonFilter
+          todolistId={todolistId}
+          title="Active"
+          filterName={TaskStatuses.Completed}
+        />
+        <ButtonFilter
+          todolistId={todolistId}
+          title="Active"
+          filterName={TaskStatuses.Draft}
+        />
       </div>
     </div>
   );

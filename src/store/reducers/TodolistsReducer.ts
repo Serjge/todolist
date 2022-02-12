@@ -1,12 +1,13 @@
+import { TaskPriorities, TaskStatuses } from 'enum';
 import { TODOLIST_ACTIONS } from 'store/actions';
 import { TodoListsType } from 'types';
-import { TodoActionType } from 'types/actions';
+import { TodoListActionType } from 'types/actions';
 
 const initialState: TodoListsType[] = [];
 
 export const TodoListsReducer = (
   state = initialState,
-  action: TodoActionType,
+  action: TodoListActionType,
 ): TodoListsType[] => {
   switch (action.type) {
     case TODOLIST_ACTIONS.CHANGE_FILTER:
@@ -17,20 +18,18 @@ export const TodoListsReducer = (
       );
     case TODOLIST_ACTIONS.REMOVE:
       return state.filter(tl => tl.id !== action.payload.todolistId);
-
     case TODOLIST_ACTIONS.ADD:
-      return [
-        {
-          id: action.payload.todolistId,
-          title: action.payload.title,
-          filter: 'all',
-        },
-        ...state,
-      ];
+      return [{ ...action.payload.todoList }, ...state];
     case TODOLIST_ACTIONS.RENAME:
       return state.map(tl =>
         tl.id === action.payload.todolistId ? { ...tl, title: action.payload.title } : tl,
       );
+    case TODOLIST_ACTIONS.SET:
+      return action.payload.todolistData.map(tl => ({
+        ...tl,
+        filter: TaskStatuses.New,
+        priority: TaskPriorities.Low,
+      }));
     default:
       return state;
   }

@@ -1,15 +1,17 @@
 export type {
-  addTaskType,
-  removeTaskType,
-  changeStatusType,
-  renameTaskType,
+  AddTaskType,
+  RemoveTaskType,
+  ChangeStatusType,
+  RenameTaskType,
   TasksActionType,
-} from './taskActionsType';
+} from 'types/actions/TaskActionsType';
 
 export type {
-  changeFilterTodolistType,
-  removeTodolistType,
-  addTodoListType,
-  renameTodoListType,
-  TodoActionType,
-} from './todoListActionsType';
+  ChangeFilterTodolistType,
+  RemoveTodolistType,
+  AddTodoListType,
+  RenameTodoListType,
+  TodoListActionType,
+  SetTodoListType,
+} from 'types/actions/TodoListActionsType';
+export type { AppActionsType } from 'types/actions/AppActionsType';

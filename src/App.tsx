@@ -1,17 +1,21 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { AddItemForm, ButtonAppBar, ContainerTodoLists } from 'components';
-import { addTodoList } from 'store/actions';
+import { addTodoListTC, getTodoListsTC } from 'store/thunks';
 
 export const App = memo(() => {
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getTodoListsTC());
+  }, []);
+
   const addTodoListHandler = useCallback(
     (title: string) => {
-      dispatch(addTodoList(title));
+      dispatch(addTodoListTC(title));
     },
     [dispatch],
   );
