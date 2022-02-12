@@ -1,4 +1,4 @@
-import { memo, ReactElement, useCallback } from 'react';
+import { memo, ReactElement, useCallback, useEffect } from 'react';
 
 import { Delete } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
@@ -8,33 +8,40 @@ import { AddItemForm, ButtonFilter, EditableSpan, Task } from 'components';
 import style from 'components/ContainerTodolists/TodoList/TodoList.module.css';
 import { FIRST_INDEX } from 'const';
 import { TaskStatuses } from 'enum';
-import { addTask } from 'store/actions';
-import { selectTodoListArray } from 'store/selectors';
-import { selectTasks } from 'store/selectors/selectTasks';
-import { removeTodoListTC, renameTodoListTC } from 'store/thunks';
+import { selectTasks, selectTodoListArray } from 'store/selectors';
+import { addTaskTC, getTasksTC, removeTodoListTC, renameTodoListTC } from 'store/thunks';
 
 type TodoListPropsType = {
   todolistId: string;
 };
 
 export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
-  const tasks = useSelector(selectTasks)[todolistId];
+  const dispatch = useDispatch();
 
-  const { title } = useSelector(selectTodoListArray).filter(
+  let tasks = useSelector(selectTasks)[todolistId];
+
+  const { filter, title } = useSelector(selectTodoListArray).filter(
     ({ id }) => id === todolistId,
   )[FIRST_INDEX];
 
-  const dispatch = useDispatch();
+  const ZERO_ARRAY_LENGTH = 0;
 
-  // if (filter === 'active') {
-  //   tasks = tasks.filter(t => !t.isDone);
-  // }
-  // if (filter === 'completed') {
-  //   tasks = tasks.filter(t => t.isDone);
-  // }
+  const TasksRender = (): ReactElement | ReactElement[] => {
+    if (tasks.length === ZERO_ARRAY_LENGTH) {
+      return <span className={style.notFont}>Not fount task</span>;
+    }
+
+    return tasks.map(({ id }) => <Task taskId={id} todolistId={todolistId} key={id} />);
+  };
+  if (filter === 'active') {
+    tasks = tasks.filter(t => t.status === TaskStatuses.New);
+  }
+  if (filter === 'completed') {
+    tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
+  }
 
   const addTaskHandler = useCallback(
-    (titleTask: string) => dispatch(addTask(todolistId, titleTask)),
+    (titleTask: string) => dispatch(addTaskTC(todolistId, titleTask)),
     [todolistId, dispatch],
   );
 
@@ -49,15 +56,9 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
     [todolistId, dispatch],
   );
 
-  const ZERO_ARRAY_LENGTH = 0;
-
-  const TasksRender = (): ReactElement | ReactElement[] => {
-    if (tasks.length === ZERO_ARRAY_LENGTH) {
-      return <span className={style.notFont}>Not fount task</span>;
-    }
-
-    return tasks.map(({ id }) => <Task taskId={id} todolistId={todolistId} key={id} />);
-  };
+  useEffect(() => {
+    dispatch(getTasksTC(todolistId));
+  }, []);
 
   return (
     <div>
@@ -74,22 +75,9 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
       <AddItemForm label="Name task" addTask={addTaskHandler} />
       <div>{TasksRender()}</div>
       <div className={style.wrapperButtons}>
-        <ButtonFilter todolistId={todolistId} title="All" filterName={TaskStatuses.New} />
-        <ButtonFilter
-          todolistId={todolistId}
-          title="Completed"
-          filterName={TaskStatuses.InProgress}
-        />
-        <ButtonFilter
-          todolistId={todolistId}
-          title="Active"
-          filterName={TaskStatuses.Completed}
-        />
-        <ButtonFilter
-          todolistId={todolistId}
-          title="Active"
-          filterName={TaskStatuses.Draft}
-        />
+        <ButtonFilter todolistId={todolistId} title="All" filterName="all" />
+        <ButtonFilter todolistId={todolistId} title="Active" filterName="active" />
+        <ButtonFilter todolistId={todolistId} title="Completed" filterName="completed" />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { TaskPriorities, TaskStatuses } from 'enum';
+import { TaskPriorities } from 'enum';
+import { FilterValuesType } from 'types';
 
 export type TodoListsServerType = {
   id: string;
@@ -12,6 +13,6 @@ export type TodoListsType = {
   title: string;
   addedDate: string;
   order: number;
-  filter: TaskStatuses;
+  filter: FilterValuesType;
   priority: TaskPriorities;
 };

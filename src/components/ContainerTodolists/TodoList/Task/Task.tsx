@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { EditableSpan } from 'components/index';
 import { FIRST_INDEX } from 'const';
-import { changeStatus, removeTask, renameTask } from 'store/actions';
+import { TaskStatuses } from 'enum';
 import { selectTasks } from 'store/selectors';
+import { removeTaskTC, updateTaskTC } from 'store/thunks';
 
 type TaskPropsType = {
   taskId: string;
@@ -15,28 +16,33 @@ type TaskPropsType = {
 };
 
 export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
+  const dispatch = useDispatch();
+
   const { status, title } = useSelector(selectTasks)[todolistId].filter(
     ({ id }) => id === taskId,
   )[FIRST_INDEX];
-  // const { isDone, title } = useSelector(state => getTask(state, todolistId, id));
-  // const { isDone, title } = useSelector(selectTask);
-
-  const dispatch = useDispatch();
 
   const onClickDeleteTask = useCallback(
-    () => dispatch(removeTask(todolistId, taskId)),
+    () => dispatch(removeTaskTC(todolistId, taskId)),
     [todolistId, taskId, dispatch],
   );
 
   const isDoneTask = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      dispatch(changeStatus(todolistId, taskId, e.currentTarget.checked));
+      const newIsDoneValue = e.currentTarget.checked;
+
+      dispatch(
+        updateTaskTC(todolistId, taskId, {
+          status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New,
+        }),
+      );
     },
     [dispatch, todolistId, taskId],
   );
 
   const renameTaskHandler = useCallback(
-    (titleTask: string) => dispatch(renameTask(todolistId, taskId, titleTask)),
+    (titleTask: string) =>
+      dispatch(updateTaskTC(todolistId, taskId, { title: titleTask })),
     [todolistId, taskId, dispatch],
   );
 
@@ -48,7 +54,7 @@ export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
             inputProps={{ 'aria-label': 'controlled' }}
             size="small"
             onChange={isDoneTask}
-            checked
+            checked={status === TaskStatuses.Completed}
           />
         </Grid>
         <Grid item>

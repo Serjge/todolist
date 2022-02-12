@@ -1,9 +1,9 @@
 export type {
   AddTaskType,
   RemoveTaskType,
-  ChangeStatusType,
-  RenameTaskType,
   TasksActionType,
+  SetTaskType,
+  ChangeTaskType,
 } from 'types/actions/TaskActionsType';
 
 export type {

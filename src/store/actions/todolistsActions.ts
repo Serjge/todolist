@@ -1,16 +1,14 @@
-import { TaskStatuses } from 'enum';
-import { TodoListsServerType, TodoListsType } from 'types';
+import { FilterValuesType, TodoListsServerType, TodoListsType } from 'types';
 
 export enum TODOLIST_ACTIONS {
-  REMOVE = 'Todolist/REMOVE',
-  ADD = 'Todolist/ADD',
-  CHANGE_FILTER = 'Todolist/CHANGE_FILTER',
-  RENAME = 'Todolist/RENAME',
-  SET = 'Todolist/SET',
-  RENAME2 = 'Todolist/RENAME2',
+  REMOVE = 'TODOLIST_REMOVE',
+  ADD = 'TODOLIST_ADD',
+  CHANGE_FILTER = 'TODOLIST_CHANGE_FILTER',
+  RENAME = 'TODOLIST_RENAME',
+  SET = 'TODOLIST_SET',
 }
 
-export const changeFilterTodolist = (todolistId: string, filter: TaskStatuses) =>
+export const changeFilterTodolist = (todolistId: string, filter: FilterValuesType) =>
   ({
     type: TODOLIST_ACTIONS.CHANGE_FILTER,
     payload: {
@@ -49,14 +47,5 @@ export const setTodoList = (todolistData: TodoListsServerType[]) =>
     type: TODOLIST_ACTIONS.SET,
     payload: {
       todolistData,
-    },
-  } as const);
-
-export const rename2TodoList = (todolistId: string, title: string) =>
-  ({
-    type: TODOLIST_ACTIONS.RENAME2,
-    payload: {
-      todolistId,
-      title,
     },
   } as const);

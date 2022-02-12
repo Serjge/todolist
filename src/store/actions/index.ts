@@ -10,7 +10,7 @@ export {
 export {
   addTask,
   removeTask,
-  changeStatus,
-  renameTask,
   TASK_ACTIONS,
+  setTasks,
+  changeTask,
 } from 'store/actions/tasksActions';

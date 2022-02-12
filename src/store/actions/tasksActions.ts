@@ -1,16 +1,17 @@
+import { TaskType } from 'types';
+
 export enum TASK_ACTIONS {
-  REMOVE = 'Task/REMOVE',
-  CHANGE_STATUS = 'Task/CHANGE_STATUS',
-  RENAME = 'Task/RENAME',
-  ADD = 'Task/ADD',
+  REMOVE = 'TASK_REMOVE',
+  CHANGE = 'TASK_CHANGE',
+  ADD = 'TASK_ADD',
+  SET = 'TASK_SET',
 }
 
-export const addTask = (todolistId: string, title: string) =>
+export const addTask = (task: TaskType) =>
   ({
     type: TASK_ACTIONS.ADD,
     payload: {
-      todolistId,
-      title,
+      task,
     },
   } as const);
 
@@ -22,21 +23,20 @@ export const removeTask = (todolistId: string, taskId: string) =>
       taskId,
     },
   } as const);
-export const changeStatus = (todolistId: string, taskId: string, isDone: boolean) =>
+
+export const setTasks = (todoListId: string, tasks: TaskType[]) =>
   ({
-    type: TASK_ACTIONS.CHANGE_STATUS,
+    type: TASK_ACTIONS.SET,
     payload: {
-      todolistId,
-      taskId,
-      isDone,
+      todoListId,
+      tasks,
     },
   } as const);
-export const renameTask = (todolistId: string, taskId: string, title: string) =>
+
+export const changeTask = (task: TaskType) =>
   ({
-    type: TASK_ACTIONS.RENAME,
+    type: TASK_ACTIONS.CHANGE,
     payload: {
-      todolistId,
-      taskId,
-      title,
+      task,
     },
   } as const);

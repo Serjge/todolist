@@ -9,16 +9,15 @@ export const TasksReducer = (
   action: TasksActionType,
 ): TasksType => {
   const copyState = { ...state };
+
   switch (action.type) {
     case TASK_ACTIONS.ADD:
-      return state;
-    // {
-    //     ...state,
-    //     [action.payload.todolistId]: [
-    //       { id: v1(), title: action.payload.title, isDone:  },
-    //       ...state[action.payload.todolistId],
-    //     ],
-    //   };
+      copyState[action.payload.task.todoListId] = [
+        action.payload.task,
+        ...copyState[action.payload.task.todoListId],
+      ];
+      return copyState;
+
     case TASK_ACTIONS.REMOVE:
       return {
         ...state,
@@ -26,30 +25,32 @@ export const TasksReducer = (
           ({ id }) => id !== action.payload.taskId,
         ),
       };
-    case TASK_ACTIONS.CHANGE_STATUS:
+
+    case TASK_ACTIONS.CHANGE:
       return {
         ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].map(t =>
-          t.id === action.payload.taskId ? { ...t, isDone: action.payload.isDone } : t,
+        [action.payload.task.todoListId]: state[action.payload.task.todoListId].map(
+          task => (task.id === action.payload.task.id ? action.payload.task : task),
         ),
       };
-    case TASK_ACTIONS.RENAME:
-      return {
-        ...state,
-        [action.payload.todolistId]: state[action.payload.todolistId].map(t =>
-          t.id === action.payload.taskId ? { ...t, title: action.payload.title } : t,
-        ),
-      };
+
     case TODOLIST_ACTIONS.REMOVE:
       delete copyState[action.payload.todolistId];
       return copyState;
+
     case TODOLIST_ACTIONS.SET:
-      action.payload.todolistData.forEach(tl => {
-        copyState[tl.id] = [];
+      action.payload.todolistData.forEach(({ id }) => {
+        copyState[id] = [];
       });
       return copyState;
+
     case TODOLIST_ACTIONS.ADD:
       return { ...state, [action.payload.todoList.id]: [] };
+
+    case TASK_ACTIONS.SET:
+      copyState[action.payload.todoListId] = action.payload.tasks;
+      return copyState;
+
     default:
       return state;
   }

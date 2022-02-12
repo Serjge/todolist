@@ -4,14 +4,14 @@ import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FIRST_INDEX } from 'const';
-import { TaskStatuses } from 'enum';
 import { changeFilterTodolist } from 'store/actions';
 import { selectTodoListArray } from 'store/selectors';
+import { FilterValuesType } from 'types';
 
 type ButtonFilterPropsType = {
   todolistId: string;
   title: string;
-  filterName: TaskStatuses;
+  filterName: FilterValuesType;
 };
 
 export const ButtonFilter = memo(
