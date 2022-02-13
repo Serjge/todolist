@@ -6,31 +6,44 @@ import { AppThunkType, TaskType } from 'types';
 export const getTasksTC =
   (todolistId: string): AppThunkType =>
   async dispatch => {
-    const res = await taskAPI.getTasks(todolistId);
-    dispatch(setTasks(todolistId, res.data.items));
+    try {
+      const res = await taskAPI.getTasks(todolistId);
+      dispatch(setTasks(todolistId, res.data.items));
+    } catch (e) {
+      throw Error('error getTasksTC');
+    }
   };
 
 export const addTaskTC =
   (todolistId: string, title: string): AppThunkType =>
   async dispatch => {
-    const res = await taskAPI.creatTask(todolistId, title);
-    dispatch(addTask(res.data.data.item));
+    try {
+      const res = await taskAPI.creatTask(todolistId, title);
+      dispatch(addTask(res.data.data.item));
+    } catch (e) {
+      throw Error('error addTaskTC');
+    }
   };
 
 export const removeTaskTC =
   (todolistId: string, taskId: string): AppThunkType =>
   async dispatch => {
-    await taskAPI.deleteTask(todolistId, taskId);
-    dispatch(removeTask(todolistId, taskId));
+    try {
+      await taskAPI.deleteTask(todolistId, taskId);
+      dispatch(removeTask(todolistId, taskId));
+    } catch (e) {
+      throw Error('error removeTaskTC');
+    }
   };
 
 export const updateTaskTC =
   (todolistId: string, taskId: string, change: Partial<TaskType>): AppThunkType =>
   async (dispatch, getState: () => rootReducerType) => {
-    const task = getState().tasks[todolistId].find(t => t.id === taskId) as TaskType;
-
-    if (task) {
+    try {
+      const task = getState().tasks[todolistId].find(t => t.id === taskId) as TaskType;
       await taskAPI.updateTask({ ...task, ...change });
       dispatch(changeTask({ ...task, ...change }));
+    } catch (e) {
+      throw Error('error updateTaskTC');
     }
   };
