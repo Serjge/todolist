@@ -3,7 +3,7 @@
 This project was made on [Create React App](https://github.com/facebook/create-react-app).
 
 ## Technologies used in the work:
-
+<span>
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"  style="max-width:100%;">
 <img src="https://img.shields.io/badge/TypeScript-20232A?style=for-the-badge&logo=typescript&logoColor=007ACC" alt="TypeScript"  style="max-width:100%;">
 
@@ -26,3 +26,4 @@ This project was made on [Create React App](https://github.com/facebook/create-r
 
 <img src="https://img.shields.io/badge/eslint-20232A?style=for-the-badge&logo=eslint&logoColor=4B32C3" alt="eslint"  style="max-width:100%;">
 <img src="https://img.shields.io/badge/Prettier-20232A?style=for-the-badge&logo=Prettier&logoColor=F7B93E" alt="Prettier"  style="max-width:100%;">
+</span>
