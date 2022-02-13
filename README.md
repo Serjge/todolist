@@ -6,9 +6,7 @@ This project was made on [Create React App](https://github.com/facebook/create-r
 <span>
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"  style="max-width:100%;">
 <img src="https://img.shields.io/badge/TypeScript-20232A?style=for-the-badge&logo=typescript&logoColor=007ACC" alt="TypeScript"  style="max-width:100%;">
-
-<img src="https://img.shields.io/badge/sass-20232A?style=for-the-badge&logo=sass&logoColor=CC6699" alt="sass"  style="max-width:100%;"> 
-
+<img src="https://img.shields.io/badge/CSS3-20232A?style=for-the-badge&logo=css3&logoColor=1572B6" alt="CSS3"  style="max-width:100%;"> 
 
 ## libraries used at work:
 
