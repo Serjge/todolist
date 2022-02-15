@@ -3,7 +3,7 @@ import { memo, ReactElement } from 'react';
 import { Container, Grid, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import { Todolist } from 'components/ContainerTodolists/TodoList';
+import { Todolist } from 'components';
 import { selectTodoListArray } from 'store/selectors';
 
 export const ContainerTodoLists = memo((): ReactElement => {

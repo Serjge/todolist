@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 
-import { instance } from 'api';
-import { GetTasksResponse, ResponseType, TaskType } from 'types';
+import { instance, GetTasksResponse, ResponseType } from 'api';
+import { TaskType } from 'types';
 
 export const taskAPI = {
   getTasks(todolistId: string) {

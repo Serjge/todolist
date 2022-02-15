@@ -1,6 +1,5 @@
-import { TASK_ACTIONS, TODOLIST_ACTIONS } from 'store/actions';
+import { TASK_ACTIONS, TasksActionType, TODOLIST_ACTIONS } from 'store/actions';
 import { TasksType } from 'types';
-import { TasksActionType } from 'types/actions';
 
 const initialState: TasksType = {};
 

@@ -1,11 +1,26 @@
 import { FIRST_INDEX } from 'const';
-import { rootReducerType } from 'store/store';
-import { TasksType, TaskType } from 'types';
+import { TaskStatuses } from 'enum';
+import { rootReducerType } from 'store';
+import { TaskType } from 'types';
 
-export const selectTasks = (state: rootReducerType): TasksType => state.tasks;
+export const selectTasks = (state: rootReducerType, todolistId: string): TaskType[] =>
+  state.tasks[todolistId];
 
 export const selectTask = (
   state: rootReducerType,
   todolistId: string,
-  id: string,
-): TaskType => state.tasks[todolistId].filter(t => t.id === id)[FIRST_INDEX];
+  taskId: string,
+): TaskType => state.tasks[todolistId].filter(({ id }) => id === taskId)[FIRST_INDEX];
+
+export const selectTaskTitle = (
+  state: rootReducerType,
+  todolistId: string,
+  taskId: string,
+): string => state.tasks[todolistId].filter(({ id }) => id === taskId)[FIRST_INDEX].title;
+
+export const selectTaskStatus = (
+  state: rootReducerType,
+  todolistId: string,
+  taskId: string,
+): TaskStatuses =>
+  state.tasks[todolistId].filter(({ id }) => id === taskId)[FIRST_INDEX].status;

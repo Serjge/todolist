@@ -19,6 +19,7 @@ export const App = memo(() => {
     },
     [dispatch],
   );
+
   return (
     <div>
       <ButtonAppBar />

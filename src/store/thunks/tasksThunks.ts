@@ -1,7 +1,9 @@
 import { taskAPI } from 'api';
+import { rootReducerType } from 'store';
 import { addTask, changeTask, removeTask, setTasks } from 'store/actions';
-import { rootReducerType } from 'store/store';
-import { AppThunkType, TaskType } from 'types';
+import { selectTask } from 'store/selectors';
+import { AppThunkType } from 'store/thunks';
+import { TaskType } from 'types';
 
 export const getTasksTC =
   (todolistId: string): AppThunkType =>
@@ -40,7 +42,8 @@ export const updateTaskTC =
   (todolistId: string, taskId: string, change: Partial<TaskType>): AppThunkType =>
   async (dispatch, getState: () => rootReducerType) => {
     try {
-      const task = getState().tasks[todolistId].find(t => t.id === taskId) as TaskType;
+      // const task = getState().tasks[todolistId].find(t => t.id === taskId) as TaskType;
+      const task = selectTask(getState(), todolistId, taskId) as TaskType;
       await taskAPI.updateTask({ ...task, ...change });
       dispatch(changeTask({ ...task, ...change }));
     } catch (e) {

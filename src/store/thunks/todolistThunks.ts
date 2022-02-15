@@ -1,6 +1,7 @@
+import { AppThunkType } from '.';
+
 import { todolistAPI } from 'api';
 import { addTodoList, removeTodolist, renameTodoList, setTodoList } from 'store/actions';
-import { AppThunkType } from 'types';
 
 export const getTodoListsTC = (): AppThunkType => async dispatch => {
   try {

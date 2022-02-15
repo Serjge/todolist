@@ -4,10 +4,10 @@ import { Delete } from '@mui/icons-material';
 import { Checkbox, Grid, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { EditableSpan } from 'components/index';
-import { FIRST_INDEX } from 'const';
+import { EditableSpan } from 'components';
 import { TaskStatuses } from 'enum';
-import { selectTasks } from 'store/selectors';
+import { rootReducerType } from 'store';
+import { selectTaskTitle, selectTaskStatus } from 'store/selectors';
 import { removeTaskTC, updateTaskTC } from 'store/thunks';
 
 type TaskPropsType = {
@@ -18,11 +18,14 @@ type TaskPropsType = {
 export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
   const dispatch = useDispatch();
 
-  const { status, title } = useSelector(selectTasks)[todolistId].filter(
-    ({ id }) => id === taskId,
-  )[FIRST_INDEX];
+  const status = useSelector((state: rootReducerType) =>
+    selectTaskStatus(state, todolistId, taskId),
+  );
+  const title = useSelector((state: rootReducerType) =>
+    selectTaskTitle(state, todolistId, taskId),
+  );
 
-  const onClickDeleteTask = useCallback(
+  const deleteTask = useCallback(
     () => dispatch(removeTaskTC(todolistId, taskId)),
     [todolistId, taskId, dispatch],
   );
@@ -40,7 +43,7 @@ export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
     [dispatch, todolistId, taskId],
   );
 
-  const renameTaskHandler = useCallback(
+  const renameTask = useCallback(
     (titleTask: string) =>
       dispatch(updateTaskTC(todolistId, taskId, { title: titleTask })),
     [todolistId, taskId, dispatch],
@@ -58,10 +61,10 @@ export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
           />
         </Grid>
         <Grid item>
-          <EditableSpan rename={renameTaskHandler} title={title} label="Name Task" />
+          <EditableSpan rename={renameTask} title={title} label="Name Task" />
         </Grid>
         <Grid item>
-          <IconButton onClick={onClickDeleteTask} aria-label="delete">
+          <IconButton onClick={deleteTask} aria-label="delete">
             <Delete />
           </IconButton>
         </Grid>

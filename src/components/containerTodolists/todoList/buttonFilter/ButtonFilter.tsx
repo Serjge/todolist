@@ -3,9 +3,9 @@ import { memo, ReactElement, useCallback } from 'react';
 import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { FIRST_INDEX } from 'const';
+import { rootReducerType } from 'store';
 import { changeFilterTodolist } from 'store/actions';
-import { selectTodoListArray } from 'store/selectors';
+import { selectTodoListFilter } from 'store/selectors';
 import { FilterValuesType } from 'types';
 
 type ButtonFilterPropsType = {
@@ -16,13 +16,13 @@ type ButtonFilterPropsType = {
 
 export const ButtonFilter = memo(
   ({ todolistId, title, filterName }: ButtonFilterPropsType): ReactElement => {
-    const { filter } = useSelector(selectTodoListArray).filter(
-      ({ id }) => id === todolistId,
-    )[FIRST_INDEX];
-
     const dispatch = useDispatch();
 
-    const onClickHandler = useCallback(
+    const filter = useSelector((state: rootReducerType) =>
+      selectTodoListFilter(state, todolistId),
+    );
+
+    const handleOnClick = useCallback(
       () => dispatch(changeFilterTodolist(todolistId, filterName)),
       [todolistId, dispatch],
     );
@@ -30,7 +30,7 @@ export const ButtonFilter = memo(
     return (
       <Button
         style={{ margin: '5px' }}
-        onClick={onClickHandler}
+        onClick={handleOnClick}
         variant={filter === filterName ? 'contained' : 'outlined'}
         size="small"
       >

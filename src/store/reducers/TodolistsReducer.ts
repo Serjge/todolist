@@ -1,7 +1,6 @@
 import { TaskPriorities } from 'enum';
-import { TODOLIST_ACTIONS } from 'store/actions';
+import { TODOLIST_ACTIONS, TodoListActionType } from 'store/actions';
 import { TodoListsType } from 'types';
-import { TodoListActionType } from 'types/actions';
 
 const initialState: TodoListsType[] = [];
 

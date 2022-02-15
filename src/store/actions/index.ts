@@ -5,12 +5,7 @@ export {
   renameTodoList,
   TODOLIST_ACTIONS,
   setTodoList,
-} from 'store/actions/todolistsActions';
+} from './todolistsActions';
 
-export {
-  addTask,
-  removeTask,
-  TASK_ACTIONS,
-  setTasks,
-  changeTask,
-} from 'store/actions/tasksActions';
+export { addTask, removeTask, TASK_ACTIONS, setTasks, changeTask } from './tasksActions';
+export type { TasksActionType, AppActionsType, TodoListActionType } from './type';
