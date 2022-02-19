@@ -2,4 +2,3 @@
 *.json
 *.d.ts
 serviceWorker.ts
-*.test.ts

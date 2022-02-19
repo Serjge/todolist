@@ -1,67 +1,182 @@
-import { TASK_ACTIONS } from 'store/actions/tasksActions';
-import { TODOLIST_ACTIONS } from 'store/actions/todolistsActions';
-import { TasksReducer,  } from 'store/reducers/TasksReducer';
-import { TasksType } from 'types';
+import { arrayElement, TaskPriorities, TaskStatuses, amountOfElements } from 'enum';
+import { TASK_ACTIONS, TODOLIST_ACTIONS } from 'store/actions';
+import { TasksReducer } from 'store/reducers';
+import { TasksType, TodoListsType } from 'types';
 
-const tasks: TasksType = {
-  '1': [
-    { id: '1', title: 'HTML&CSS', isDone: true },
-    { id: '2', title: 'JS', isDone: true },
-    { id: '3', title: 'ReactJS', isDone: false },
-    { id: '4', title: 'Rest API', isDone: false },
-    { id: '5', title: 'GraphQL', isDone: false },
-  ],
-};
+let startState: TasksType;
+
+beforeEach(() => {
+  startState = {
+    '1': [
+      {
+        description: '',
+        title: 'HTML&CSS',
+        status: TaskStatuses.New,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        id: '1',
+        todoListId: '1',
+        order: 0,
+        addedDate: '',
+      },
+      {
+        description: '',
+        title: 'JS',
+        status: TaskStatuses.New,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        id: '2',
+        todoListId: '1',
+        order: -1,
+        addedDate: '',
+      },
+    ],
+  };
+});
 
 test('remove task', () => {
-  const removeTask = TasksReducer(tasks, {
+  const removeTask = TasksReducer(startState, {
     type: TASK_ACTIONS.REMOVE,
     payload: { todolistId: '1', taskId: '2' },
   });
-  expect(removeTask['1'][1].id).toBe('3');
-  expect(removeTask['1'].length).toBe(4);
+
+  expect(removeTask['1'][arrayElement.null].id).toBe('1');
+  expect(removeTask['1'].length).toBe(amountOfElements.one);
 });
 
 test('change isDone task', () => {
-  const isDoneTask = TasksReducer(tasks, {
-    type: TASK_ACTIONS.CHANGE_STATUS,
-    payload: { todolistId: '1', taskId: '2', isDone: false },
+  const updateTask = {
+    description: '',
+    title: 'JS',
+    status: TaskStatuses.Completed,
+    priority: TaskPriorities.Low,
+    startDate: '',
+    deadline: '',
+    id: '2',
+    todoListId: '1',
+    order: -1,
+    addedDate: '',
+  };
+
+  const isDoneTask = TasksReducer(startState, {
+    type: TASK_ACTIONS.CHANGE,
+    payload: { task: updateTask },
   });
-  expect(isDoneTask['1'][1].isDone).toBe(false);
-  expect(isDoneTask['1'][1].title).toBe('JS');
+
+  expect(isDoneTask['1'][arrayElement.first].status).toBe(TaskStatuses.Completed);
+  expect(isDoneTask['1'][arrayElement.first].title).toBe('JS');
 });
 
 test('update title task', () => {
-  const updateTask = TasksReducer(tasks, {
-    type: TASK_ACTIONS.RENAME,
-    payload: { todolistId: '1', taskId: '2', title: 'Test' },
+  const updateTask = {
+    description: '',
+    title: 'Test',
+    status: TaskStatuses.New,
+    priority: TaskPriorities.Low,
+    startDate: '',
+    deadline: '',
+    id: '2',
+    todoListId: '1',
+    order: -1,
+    addedDate: '',
+  };
+
+  const renameTask = TasksReducer(startState, {
+    type: TASK_ACTIONS.CHANGE,
+    payload: { task: updateTask },
   });
-  expect(updateTask['1'][1].title).toBe('Test');
-  expect(updateTask['1'][1].isDone).toBe(true);
+
+  expect(renameTask['1'][arrayElement.first].title).toBe('Test');
+  expect(renameTask['1'][arrayElement.first].status).toBe(TaskStatuses.New);
 });
 
-test('add todolist task', () => {
-  const addTodolistTask = TasksReducer(tasks, {
+test('add todolist', () => {
+  const newTodolist: TodoListsType = {
+    id: '2',
+    title: 'New',
+    addedDate: '',
+    order: -1,
+    filter: 'all',
+    priority: TaskPriorities.Low,
+  };
+
+  const addTodolist = TasksReducer(startState, {
     type: TODOLIST_ACTIONS.ADD,
-    payload: { todolistId: '2', title: '111' },
+    payload: { todoList: newTodolist },
   });
-  expect(addTodolistTask['2'].length).toBe(0);
+
+  expect(addTodolist['2'].length).toBe(amountOfElements.zero);
 });
 
-test('remove tasks', () => {
-  const removeTasks = TasksReducer(tasks, {
+test('remove todolist', () => {
+  const removeTodolist = TasksReducer(startState, {
     type: TODOLIST_ACTIONS.REMOVE,
     payload: { todolistId: '1' },
   });
-  expect(removeTasks['1']).toBe(undefined);
+
+  expect(removeTodolist['1']).toBe(undefined);
 });
 
 test('add task', () => {
-  const addTask = TasksReducer(tasks, {
+  const newTask = {
+    description: '',
+    title: 'ReactJS',
+    status: TaskStatuses.New,
+    priority: TaskPriorities.Low,
+    startDate: '',
+    deadline: '',
+    id: '3',
+    todoListId: '1',
+    order: -2,
+    addedDate: '',
+  };
+
+  const addTask = TasksReducer(startState, {
     type: TASK_ACTIONS.ADD,
-    payload: { todolistId: '1', title: 'Test' },
+    payload: { task: newTask },
   });
-  expect(addTask['1'][0].title).toBe('Test');
-  expect(addTask['1'][0].isDone).toBe(false);
-  expect(addTask['1'].length).toBe(6);
+
+  expect(addTask['1'][arrayElement.first].title).toBe('ReactJS');
+  expect(addTask['1'][arrayElement.null].status).toBe(TaskStatuses.New);
+  expect(addTask['1'].length).toBe(amountOfElements.three);
+});
+
+test('set tasks', () => {
+  const serverTasks = [
+    {
+      description: '',
+      title: 'HTML&CSS',
+      status: TaskStatuses.New,
+      priority: TaskPriorities.Low,
+      startDate: '',
+      deadline: '',
+      id: '1',
+      todoListId: '1',
+      order: 0,
+      addedDate: '',
+    },
+    {
+      description: '',
+      title: 'JS',
+      status: TaskStatuses.New,
+      priority: TaskPriorities.Low,
+      startDate: '',
+      deadline: '',
+      id: '2',
+      todoListId: '1',
+      order: -1,
+      addedDate: '',
+    },
+  ];
+
+  const setTasks = TasksReducer(startState, {
+    type: TASK_ACTIONS.SET,
+    payload: { todoListId: '2', tasks: serverTasks },
+  });
+
+  expect(setTasks['1'][arrayElement.first].title).toBe('JS');
+  expect(setTasks['1'][arrayElement.null].status).toBe(TaskStatuses.New);
+  expect(setTasks['1'].length).toBe(amountOfElements.two);
 });
