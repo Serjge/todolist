@@ -1,7 +1,7 @@
 import { memo, ReactElement, useCallback, useEffect } from 'react';
 
 import { Delete } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import style from './TodoList.module.css';
@@ -9,7 +9,12 @@ import style from './TodoList.module.css';
 import { AddItemForm, ButtonFilter, EditableSpan, Task } from 'components';
 import { TaskStatuses } from 'enum';
 import { rootReducerType } from 'store';
-import { selectTasks, selectTodoListFilter, selectTodoListTitle } from 'store/selectors';
+import {
+  selectTasks,
+  selectTodoListFilter,
+  selectTodoListTitle,
+  selectTodoListEntityStatus,
+} from 'store/selectors';
 import { addTaskTC, getTasksTC, removeTodoListTC, renameTodoListTC } from 'store/thunks';
 
 type TodoListPropsType = {
@@ -25,6 +30,9 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
   );
   const filter = useSelector((state: rootReducerType) =>
     selectTodoListFilter(state, todolistId),
+  );
+  const entityStatus = useSelector((state: rootReducerType) =>
+    selectTodoListEntityStatus(state, todolistId),
   );
 
   const ZERO_ARRAY_LENGTH = 0;
@@ -65,7 +73,7 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
   }, []);
 
   return (
-    <div>
+    <div className={entityStatus === 'loading' ? style.disable : ''}>
       <h3 className={style.title}>
         <EditableSpan title={title} rename={renameTodoList} label="Name Todolist" />
         <IconButton onClick={deleteTodoList} aria-label="delete">
@@ -73,6 +81,11 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
         </IconButton>
       </h3>
       <AddItemForm label="Name task" addTask={addTask} />
+      {entityStatus === 'idle' && (
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '30px' }}>
+          <CircularProgress />
+        </div>
+      )}
       <div>{TasksRender()}</div>
       <div className={style.wrapperButtons}>
         <ButtonFilter todolistId={todolistId} title="All" filterName="all" />

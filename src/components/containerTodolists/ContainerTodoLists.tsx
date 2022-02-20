@@ -11,7 +11,7 @@ export const ContainerTodoLists = memo((): ReactElement => {
 
   const TodoListsMap = todoLists.map(({ id }) => (
     <Grid key={id} item>
-      <Paper style={{ padding: '10px' }}>
+      <Paper style={{ padding: '10px', position: 'relative' }}>
         <Todolist todolistId={id} />
       </Paper>
     </Grid>

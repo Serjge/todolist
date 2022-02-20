@@ -1,6 +1,6 @@
 import { amountOfElements, arrayElement, TaskPriorities } from 'enum';
 import { TODOLIST_ACTIONS } from 'store/actions';
-import { TodoListsReducer } from 'store/reducers';
+import { todoListsReducer } from 'store/reducers';
 import { TodoListsServerType, TodoListsType } from 'types';
 
 let startState: TodoListsType[];
@@ -14,6 +14,7 @@ beforeEach(() => {
       order: 0,
       filter: 'all',
       priority: TaskPriorities.Low,
+      entityStatus: 'idle',
     },
     {
       id: '2',
@@ -22,12 +23,13 @@ beforeEach(() => {
       order: -1,
       filter: 'all',
       priority: TaskPriorities.Low,
+      entityStatus: 'idle',
     },
   ];
 });
 
 test('remove todolist', () => {
-  const removeTodolist = TodoListsReducer(startState, {
+  const removeTodolist = todoListsReducer(startState, {
     type: TODOLIST_ACTIONS.REMOVE,
     payload: { todolistId: '1' },
   });
@@ -37,7 +39,7 @@ test('remove todolist', () => {
 });
 
 test('change filter todolist', () => {
-  const filterTodolist = TodoListsReducer(startState, {
+  const filterTodolist = todoListsReducer(startState, {
     type: TODOLIST_ACTIONS.CHANGE_FILTER,
     payload: { todolistId: '1', filter: 'active' },
   });
@@ -47,13 +49,13 @@ test('change filter todolist', () => {
 });
 
 test('update title todolist', () => {
-  const updateTask = TodoListsReducer(startState, {
+  const updateTodolist = todoListsReducer(startState, {
     type: TODOLIST_ACTIONS.RENAME,
     payload: { todolistId: '1', title: 'Test' },
   });
 
-  expect(updateTask[arrayElement.null].title).toBe('Test');
-  expect(updateTask[arrayElement.first].title).toBe('What to buy');
+  expect(updateTodolist[arrayElement.null].title).toBe('Test');
+  expect(updateTodolist[arrayElement.first].title).toBe('What to buy');
 });
 
 test('add todolist', () => {
@@ -64,9 +66,10 @@ test('add todolist', () => {
     order: -1,
     filter: 'all',
     priority: TaskPriorities.Low,
+    entityStatus: 'idle',
   };
 
-  const addTodolist = TodoListsReducer(startState, {
+  const addTodolist = todoListsReducer(startState, {
     type: TODOLIST_ACTIONS.ADD,
     payload: { todoList: newTodolist },
   });
@@ -92,7 +95,7 @@ test('set todolist', () => {
     },
   ];
 
-  const setTodolist = TodoListsReducer(startState, {
+  const setTodolist = todoListsReducer(startState, {
     type: TODOLIST_ACTIONS.SET,
     payload: { todolistData: TodoLists },
   });
@@ -100,4 +103,15 @@ test('set todolist', () => {
   expect(setTodolist[arrayElement.null].title).toBe('What to learn');
   expect(setTodolist[arrayElement.null].filter).toBe('all');
   expect(setTodolist.length).toBe(amountOfElements.two);
+});
+
+test('change entity status todolist', () => {
+  const updateTask = todoListsReducer(startState, {
+    type: TODOLIST_ACTIONS.CHANGE_ENTITY_STATUS,
+    payload: { todolistId: '1', entityStatus: 'loading' },
+  });
+
+  expect(updateTask[arrayElement.null].entityStatus).toBe('loading');
+  expect(updateTask[arrayElement.first].entityStatus).toBe('idle');
+  expect(updateTask[arrayElement.first].title).toBe('What to buy');
 });

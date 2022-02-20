@@ -3,7 +3,7 @@ import { TasksType } from 'types';
 
 const initialState: TasksType = {};
 
-export const TasksReducer = (
+export const tasksReducer = (
   state = initialState,
   action: TasksActionType,
 ): TasksType => {

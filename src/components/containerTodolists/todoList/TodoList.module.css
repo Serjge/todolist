@@ -14,3 +14,18 @@
     display: flex;
     justify-content: center;
 }
+
+.disable:before {
+    z-index: 10;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    right: 0;
+
+}

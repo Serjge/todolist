@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import { AddItemForm, ButtonAppBar, ContainerTodoLists } from 'components';
+import { AddItemForm, ButtonAppBar, ContainerTodoLists, ErrorSnackbar } from 'components';
 import { addTodoListTC, getTodoListsTC } from 'store/thunks';
 
 export const App = memo(() => {
@@ -27,6 +27,7 @@ export const App = memo(() => {
         <AddItemForm label="Name Todolist" addTask={addTodoListHandler} />
       </Grid>
       <ContainerTodoLists />
+      <ErrorSnackbar />
     </div>
   );
 });

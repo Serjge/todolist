@@ -4,7 +4,7 @@ import { TodoListsType } from 'types';
 
 const initialState: TodoListsType[] = [];
 
-export const TodoListsReducer = (
+export const todoListsReducer = (
   state = initialState,
   action: TodoListActionType,
 ): TodoListsType[] => {
@@ -25,6 +25,7 @@ export const TodoListsReducer = (
           ...action.payload.todoList,
           filter: 'all',
           priority: TaskPriorities.Low,
+          entityStatus: 'idle',
         },
         ...state,
       ];
@@ -41,7 +42,15 @@ export const TodoListsReducer = (
         ...todolist,
         filter: 'all',
         priority: TaskPriorities.Low,
+        entityStatus: 'idle',
       }));
+
+    case TODOLIST_ACTIONS.CHANGE_ENTITY_STATUS:
+      return state.map(tl =>
+        tl.id === action.payload.todolistId
+          ? { ...tl, entityStatus: action.payload.entityStatus }
+          : tl,
+      );
 
     default:
       return state;

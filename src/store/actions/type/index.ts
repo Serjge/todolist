@@ -4,7 +4,7 @@ export type {
   TasksActionType,
   SetTaskType,
   ChangeTaskType,
-} from './TaskActionsType';
+} from 'store/actions/type/TaskActionsType';
 
 export type {
   ChangeFilterTodolistType,
@@ -14,4 +14,12 @@ export type {
   TodoListActionType,
   SetTodoListType,
 } from './TodoListActionsType';
-export type { AppActionsType } from './AppActionsType';
+
+export type { ActionsType } from 'store/actions/type/ActionsType';
+
+export type {
+  AppActionsType,
+  setAppStatusType,
+  setAppErrorType,
+  ErrorUtilsDispatchType,
+} from 'store/actions/type/AppActionsType';

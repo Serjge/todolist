@@ -1,6 +1,6 @@
 import { FIRST_INDEX } from 'const';
 import { rootReducerType } from 'store';
-import { FilterValuesType, TodoListsType } from 'types';
+import { FilterValuesType, RequestStatusType, TodoListsType } from 'types';
 
 export const selectTodoListArray = (state: rootReducerType): TodoListsType[] =>
   state.todoList;
@@ -18,3 +18,9 @@ export const selectTodoListFilter = (
   todolistId: string,
 ): FilterValuesType =>
   state.todoList.filter(({ id }) => id === todolistId)[FIRST_INDEX].filter;
+
+export const selectTodoListEntityStatus = (
+  state: rootReducerType,
+  todolistId: string,
+): RequestStatusType =>
+  state.todoList.filter(({ id }) => id === todolistId)[FIRST_INDEX].entityStatus;

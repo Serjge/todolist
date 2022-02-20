@@ -1,6 +1,6 @@
 import { arrayElement, TaskPriorities, TaskStatuses, amountOfElements } from 'enum';
 import { TASK_ACTIONS, TODOLIST_ACTIONS } from 'store/actions';
-import { TasksReducer } from 'store/reducers';
+import { tasksReducer } from 'store/reducers';
 import { TasksType, TodoListsType } from 'types';
 
 let startState: TasksType;
@@ -37,7 +37,7 @@ beforeEach(() => {
 });
 
 test('remove task', () => {
-  const removeTask = TasksReducer(startState, {
+  const removeTask = tasksReducer(startState, {
     type: TASK_ACTIONS.REMOVE,
     payload: { todolistId: '1', taskId: '2' },
   });
@@ -60,7 +60,7 @@ test('change isDone task', () => {
     addedDate: '',
   };
 
-  const isDoneTask = TasksReducer(startState, {
+  const isDoneTask = tasksReducer(startState, {
     type: TASK_ACTIONS.CHANGE,
     payload: { task: updateTask },
   });
@@ -83,7 +83,7 @@ test('update title task', () => {
     addedDate: '',
   };
 
-  const renameTask = TasksReducer(startState, {
+  const renameTask = tasksReducer(startState, {
     type: TASK_ACTIONS.CHANGE,
     payload: { task: updateTask },
   });
@@ -102,7 +102,7 @@ test('add todolist', () => {
     priority: TaskPriorities.Low,
   };
 
-  const addTodolist = TasksReducer(startState, {
+  const addTodolist = tasksReducer(startState, {
     type: TODOLIST_ACTIONS.ADD,
     payload: { todoList: newTodolist },
   });
@@ -111,7 +111,7 @@ test('add todolist', () => {
 });
 
 test('remove todolist', () => {
-  const removeTodolist = TasksReducer(startState, {
+  const removeTodolist = tasksReducer(startState, {
     type: TODOLIST_ACTIONS.REMOVE,
     payload: { todolistId: '1' },
   });
@@ -133,7 +133,7 @@ test('add task', () => {
     addedDate: '',
   };
 
-  const addTask = TasksReducer(startState, {
+  const addTask = tasksReducer(startState, {
     type: TASK_ACTIONS.ADD,
     payload: { task: newTask },
   });
@@ -171,7 +171,7 @@ test('set tasks', () => {
     },
   ];
 
-  const setTasks = TasksReducer(startState, {
+  const setTasks = tasksReducer(startState, {
     type: TASK_ACTIONS.SET,
     payload: { todoListId: '2', tasks: serverTasks },
   });
