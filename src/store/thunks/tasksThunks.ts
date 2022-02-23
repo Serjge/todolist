@@ -78,12 +78,15 @@ export const updateTaskTC =
   (todolistId: string, taskId: string, change: Partial<TaskType>): AppThunkType =>
   async (dispatch, getState: () => rootReducerType) => {
     try {
-      // const task = getState().tasks[todolistId].find(t => t.id === taskId) as TaskType;
       dispatch(changeTodolistEntityStatus(todolistId, 'loading'));
       dispatch(setAppStatus('loading'));
       const task = selectTask(getState(), todolistId, taskId) as TaskType;
-      await taskAPI.updateTask({ ...task, ...change });
-      dispatch(changeTask({ ...task, ...change }));
+      const res = await taskAPI.updateTask({ ...task, ...change });
+      if (res.data.resultCode === ResultCode.success) {
+        dispatch(changeTask(res.data.data.item));
+      } else {
+        handleServerAppError(res.data, dispatch);
+      }
     } catch (error) {
       const { message } = error as AxiosError;
 

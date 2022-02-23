@@ -10,5 +10,6 @@ export {
   selectTodoListFilter,
   selectTodoListTitle,
   selectTodoListEntityStatus,
+  selectTodoListArrayId,
 } from './selectTodolist';
 export { selectStatus, selectError } from './selectApp';

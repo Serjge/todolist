@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, memo, useState } from 'react';
+import { KeyboardEvent, memo, useCallback, useRef, useState } from 'react';
 
 import { Button, TextField } from '@mui/material';
 
@@ -8,40 +8,36 @@ type AddItemFormPropsType = {
 };
 
 export const AddItemForm = memo(({ addTask, label }: AddItemFormPropsType) => {
-  const [title, setTitle] = useState('');
+  const refTitle = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<boolean>(false);
 
-  const addTaskHandler = (): void => {
-    if (title.trim() !== '') {
-      addTask(title.trim());
-      setTitle('');
+  const addTaskHandler = useCallback((): void => {
+    if (refTitle.current!.value.trim() !== '') {
+      addTask(refTitle.current!.value.trim());
+      refTitle.current!.value = '';
     } else {
       setError(true);
     }
-  };
+  }, [error]);
 
-  const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-    setTitle(e.currentTarget.value);
-  };
-
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>): void => {
+  const addTitleOnKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (error) {
       setError(false);
-      if (e.key === 'Enter') {
-        addTaskHandler();
-      }
+    }
+    if (e.key === 'Enter') {
+      addTaskHandler();
     }
   };
+
   return (
     <div>
       <TextField
+        inputRef={refTitle}
+        onKeyPress={addTitleOnKeyPress}
         label={error ? 'Title is required' : label}
         error={error}
         variant="outlined"
-        value={title}
         size="small"
-        onChange={onChangeTitleHandler}
-        onKeyPress={onKeyPressHandler}
       />
       <Button
         style={{

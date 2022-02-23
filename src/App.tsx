@@ -3,7 +3,13 @@ import { memo, useCallback, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-import { AddItemForm, ButtonAppBar, ContainerTodoLists, ErrorSnackbar } from 'components';
+import {
+  AddItemForm,
+  ButtonAppBar,
+  ContainerTodoLists,
+  ErrorSnackbar,
+  LoadingBar,
+} from 'components';
 import { addTodoListTC, getTodoListsTC } from 'store/thunks';
 
 export const App = memo(() => {
@@ -13,6 +19,13 @@ export const App = memo(() => {
     dispatch(getTodoListsTC());
   }, []);
 
+  // useEffect(() => {
+  //   const ws = new WebSocket(
+  //     'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
+  //   );
+  //   ws.onmessage = message => console.log(message);
+  // }, []);
+  //
   const addTodoListHandler = useCallback(
     (title: string) => {
       dispatch(addTodoListTC(title));
@@ -23,6 +36,7 @@ export const App = memo(() => {
   return (
     <div>
       <ButtonAppBar />
+      <LoadingBar />
       <Grid container justifyContent="center" style={{ padding: '20px' }}>
         <AddItemForm label="Name Todolist" addTask={addTodoListHandler} />
       </Grid>

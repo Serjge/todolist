@@ -2,7 +2,7 @@ import { memo, ReactElement, useCallback, useEffect } from 'react';
 
 import { Delete } from '@mui/icons-material';
 import { CircularProgress, IconButton } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import style from './TodoList.module.css';
 
@@ -11,9 +11,9 @@ import { TaskStatuses } from 'enum';
 import { rootReducerType } from 'store';
 import {
   selectTasks,
-  selectTodoListFilter,
   selectTodoListTitle,
   selectTodoListEntityStatus,
+  selectTodoListFilter,
 } from 'store/selectors';
 import { addTaskTC, getTasksTC, removeTodoListTC, renameTodoListTC } from 'store/thunks';
 
@@ -24,21 +24,36 @@ type TodoListPropsType = {
 export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
   const dispatch = useDispatch();
 
-  let tasks = useSelector((state: rootReducerType) => selectTasks(state, todolistId));
-  const title = useSelector((state: rootReducerType) =>
-    selectTodoListTitle(state, todolistId),
-  );
-  const filter = useSelector((state: rootReducerType) =>
-    selectTodoListFilter(state, todolistId),
-  );
-  const entityStatus = useSelector((state: rootReducerType) =>
-    selectTodoListEntityStatus(state, todolistId),
+  let tasks = useSelector(
+    (state: rootReducerType) => selectTasks(state, todolistId),
+    shallowEqual,
   );
 
-  const ZERO_ARRAY_LENGTH = 0;
+  const title = useSelector(
+    (state: rootReducerType) => selectTodoListTitle(state, todolistId),
+    shallowEqual,
+  );
+
+  const filter = useSelector(
+    (state: rootReducerType) => selectTodoListFilter(state, todolistId),
+    shallowEqual,
+  );
+  const entityStatus = useSelector(
+    (state: rootReducerType) => selectTodoListEntityStatus(state, todolistId),
+    shallowEqual,
+  );
+
+  const zeroArrayTasks = 0;
 
   const TasksRender = (): ReactElement | ReactElement[] => {
-    if (tasks.length === ZERO_ARRAY_LENGTH) {
+    if (entityStatus === 'idle') {
+      return (
+        <div className={style.loadingBar}>
+          <CircularProgress />
+        </div>
+      );
+    }
+    if (tasks.length === zeroArrayTasks) {
       return <span className={style.notFont}>Not fount task</span>;
     }
 
@@ -81,11 +96,6 @@ export const Todolist = memo(({ todolistId }: TodoListPropsType) => {
         </IconButton>
       </h3>
       <AddItemForm label="Name task" addTask={addTask} />
-      {entityStatus === 'idle' && (
-        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '30px' }}>
-          <CircularProgress />
-        </div>
-      )}
       <div>{TasksRender()}</div>
       <div className={style.wrapperButtons}>
         <ButtonFilter todolistId={todolistId} title="All" filterName="all" />

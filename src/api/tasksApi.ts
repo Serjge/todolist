@@ -23,7 +23,7 @@ export const taskAPI = {
   updateTask(model: Partial<TaskType>) {
     return instance.put<
       ResponseType<{ item: TaskType }>,
-      AxiosResponse<ResponseType<Partial<TaskType>>>,
+      AxiosResponse<ResponseType<{ item: TaskType }>>,
       Partial<TaskType>
     >(`/todo-lists/${model.todoListId}/tasks/${model.id}`, model);
   },

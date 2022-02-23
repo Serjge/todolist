@@ -4,12 +4,12 @@ import { Container, Grid, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import { Todolist } from 'components';
-import { selectTodoListArray } from 'store/selectors';
+import { selectTodoListArrayId } from 'store/selectors';
 
 export const ContainerTodoLists = memo((): ReactElement => {
-  const todoLists = useSelector(selectTodoListArray);
+  const todoListsId = useSelector(selectTodoListArrayId);
 
-  const TodoListsMap = todoLists.map(({ id }) => (
+  const TodoListsMap = todoListsId.map(id => (
     <Grid key={id} item>
       <Paper style={{ padding: '10px', position: 'relative' }}>
         <Todolist todolistId={id} />

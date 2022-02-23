@@ -5,6 +5,9 @@ import { FilterValuesType, RequestStatusType, TodoListsType } from 'types';
 export const selectTodoListArray = (state: rootReducerType): TodoListsType[] =>
   state.todoList;
 
+export const selectTodoListArrayId = (state: rootReducerType): string[] =>
+  state.todoList.map(({ id }) => id);
+
 export const selectTodoList = (
   state: rootReducerType,
   todolistId: string,

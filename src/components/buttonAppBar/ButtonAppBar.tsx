@@ -1,23 +1,10 @@
-import { ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  LinearProgress,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import { useSelector } from 'react-redux';
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 
-import { selectStatus } from 'store/selectors';
-
-export const ButtonAppBar = (): ReactElement => {
-  const status = useSelector(selectStatus);
-
-  return (
+export const ButtonAppBar = memo(
+  (): ReactElement => (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
@@ -29,8 +16,7 @@ export const ButtonAppBar = (): ReactElement => {
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
-        {status === 'loading' && <LinearProgress />}
       </AppBar>
     </Box>
-  );
-};
+  ),
+);
