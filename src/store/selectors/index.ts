@@ -4,6 +4,7 @@ export {
   selectTask,
   selectTaskStatus,
 } from 'store/selectors/selectTasks';
+
 export {
   selectTodoList,
   selectTodoListArray,
@@ -12,4 +13,7 @@ export {
   selectTodoListEntityStatus,
   selectTodoListArrayId,
 } from './selectTodolist';
-export { selectStatus, selectError } from './selectApp';
+
+export { selectStatus, selectError, selectIsInitialized } from './selectApp';
+
+export { selectIsLoginIn } from './selectAuth';

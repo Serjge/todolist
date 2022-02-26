@@ -17,6 +17,10 @@ export type {
   setAppErrorType,
   setAppStatusType,
   ErrorUtilsDispatchType,
+  setIsLoggedInType,
+  AuthActionsType,
 } from './type';
 
-export { setAppStatus, setAppError, APP_ACTIONS } from './appActions';
+export { setIsLoggedIn, AUTH_ACTIONS } from './authActions';
+
+export { setAppStatus, setAppError, setIsInitialized, APP_ACTIONS } from './appActions';

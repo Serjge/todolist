@@ -23,3 +23,5 @@ export type {
   setAppErrorType,
   ErrorUtilsDispatchType,
 } from 'store/actions/type/AppActionsType';
+
+export type { setIsLoggedInType, AuthActionsType } from './AuthActionsType';

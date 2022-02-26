@@ -1,4 +1,4 @@
-import { APP_ACTIONS } from 'store/actions';
+import { AUTH_ACTIONS } from 'store/actions';
 import { appReducer } from 'store/reducers';
 import { AppType } from 'types';
 
@@ -13,7 +13,7 @@ beforeEach(() => {
 
 test('change status app', () => {
   const changeStatusApp = appReducer(startState, {
-    type: APP_ACTIONS.SET_STATUS,
+    type: AUTH_ACTIONS.SET_STATUS,
     payload: { status: 'loading' },
   });
 
@@ -23,7 +23,7 @@ test('change status app', () => {
 
 test('change error app', () => {
   const isDoneTask = appReducer(startState, {
-    type: APP_ACTIONS.SET_ERROR,
+    type: AUTH_ACTIONS.SET_ERROR,
     payload: { error: 'Error' },
   });
 

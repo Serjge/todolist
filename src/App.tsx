@@ -1,46 +1,47 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
-import { Grid } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { CircularProgress } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  AddItemForm,
   ButtonAppBar,
   ContainerTodoLists,
   ErrorSnackbar,
   LoadingBar,
+  Login,
 } from 'components';
-import { addTodoListTC, getTodoListsTC } from 'store/thunks';
+import { selectIsInitialized } from 'store/selectors';
+import { initializeAppTC } from 'store/thunks';
 
 export const App = memo(() => {
   const dispatch = useDispatch();
 
+  const isInitialized = useSelector(selectIsInitialized);
+
   useEffect(() => {
-    dispatch(getTodoListsTC());
+    dispatch(initializeAppTC());
   }, []);
 
-  // useEffect(() => {
-  //   const ws = new WebSocket(
-  //     'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx',
-  //   );
-  //   ws.onmessage = message => console.log(message);
-  // }, []);
-  //
-  const addTodoListHandler = useCallback(
-    (title: string) => {
-      dispatch(addTodoListTC(title));
-    },
-    [dispatch],
-  );
+  if (!isInitialized) {
+    return (
+      <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div>
       <ButtonAppBar />
       <LoadingBar />
-      <Grid container justifyContent="center" style={{ padding: '20px' }}>
-        <AddItemForm label="Name Todolist" addTask={addTodoListHandler} />
-      </Grid>
-      <ContainerTodoLists />
+      <Routes>
+        <Route path="/" element={<ContainerTodoLists />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/404" />} />
+        <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
+      </Routes>
+      {/* <ContainerTodoLists /> */}
       <ErrorSnackbar />
     </div>
   );
