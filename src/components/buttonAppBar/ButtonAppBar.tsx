@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { selectIsLoginIn } from 'store/selectors';
-import { logoutTC } from 'store/thunks/authThunks';
+import { logoutTC } from 'store/thunks';
 
 export const ButtonAppBar = memo((): ReactElement => {
   const dispatch = useDispatch();

@@ -41,7 +41,6 @@ export const App = memo(() => {
         <Route path="*" element={<Navigate to="/404" />} />
         <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
       </Routes>
-      {/* <ContainerTodoLists /> */}
       <ErrorSnackbar />
     </div>
   );
