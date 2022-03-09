@@ -1,11 +1,11 @@
 import {
   addTodoList,
   changeFilterTodolist,
+  changeTodolistEntityStatus,
   removeTodolist,
   renameTodoList,
   setTodoList,
-} from 'store/actions';
-import { changeTodolistEntityStatus } from 'store/actions/todolistsActions';
+} from 'store/reducers/todoListsReducer';
 
 export type TodoListActionType =
   | ChangeFilterTodolistType

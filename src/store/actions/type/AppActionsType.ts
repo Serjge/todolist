@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { setAppError, setAppStatus, setIsInitialized } from 'store/actions';
+import { setAppError, setAppStatus, setIsInitialized } from 'store/reducers/appReducer';
 
 export type setAppStatusType = ReturnType<typeof setAppStatus>;
 export type setAppErrorType = ReturnType<typeof setAppError>;

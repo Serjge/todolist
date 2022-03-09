@@ -1,6 +1,6 @@
 import { AddTodoListType, RemoveTodolistType, SetTodoListType } from '.';
 
-import { addTask, changeTask, removeTask, setTasks } from 'store/actions';
+import { addTask, changeTask, removeTask, setTasks } from 'store/reducers/tasksReducer';
 
 export type TasksActionType =
   | AddTaskType

@@ -1,14 +1,4 @@
-export {
-  changeFilterTodolist,
-  removeTodolist,
-  addTodoList,
-  renameTodoList,
-  TODOLIST_ACTIONS,
-  setTodoList,
-  changeTodolistEntityStatus,
-} from './todolistsActions';
-
-export { addTask, removeTask, TASK_ACTIONS, setTasks, changeTask } from './tasksActions';
+export { TASK_ACTIONS } from './tasksActions';
 export type {
   TasksActionType,
   ActionsType,
@@ -21,6 +11,6 @@ export type {
   AuthActionsType,
 } from './type';
 
-export { setIsLoggedIn, AUTH_ACTIONS } from './authActions';
+export { AUTH_ACTIONS } from './authActions';
 
-export { setAppStatus, setAppError, setIsInitialized, APP_ACTIONS } from './appActions';
+export { APP_ACTIONS } from './appActions';

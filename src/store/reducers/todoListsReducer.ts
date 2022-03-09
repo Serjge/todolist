@@ -1,58 +1,65 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { TaskPriorities } from 'enum';
-import { TODOLIST_ACTIONS, TodoListActionType } from 'store/actions';
-import { TodoListsType } from 'types';
+import {
+  FilterValuesType,
+  RequestStatusType,
+  TodoListsServerType,
+  TodoListsType,
+} from 'types';
 
 const initialState: TodoListsType[] = [];
 
-export const todoListsReducer = (
-  state = initialState,
-  action: TodoListActionType,
-): TodoListsType[] => {
-  switch (action.type) {
-    case TODOLIST_ACTIONS.CHANGE_FILTER:
-      return state.map(todolist =>
-        todolist.id === action.payload.todolistId
-          ? { ...todolist, filter: action.payload.filter }
-          : todolist,
-      );
-
-    case TODOLIST_ACTIONS.REMOVE:
+const slice = createSlice({
+  name: 'todoListsReducer',
+  initialState,
+  reducers: {
+    changeFilterTodolist(
+      state,
+      action: PayloadAction<{ todolistId: string; filter: FilterValuesType }>,
+    ) {
+      const index = state.findIndex(({ id }) => id === action.payload.todolistId);
+      state[index].filter = action.payload.filter;
+    },
+    removeTodolist(state, action: PayloadAction<{ todolistId: string }>) {
       return state.filter(({ id }) => id !== action.payload.todolistId);
-
-    case TODOLIST_ACTIONS.ADD:
-      return [
-        {
-          ...action.payload.todoList,
-          filter: 'all',
-          priority: TaskPriorities.Low,
-          entityStatus: 'idle',
-        },
-        ...state,
-      ];
-
-    case TODOLIST_ACTIONS.RENAME:
-      return state.map(todolist =>
-        todolist.id === action.payload.todolistId
-          ? { ...todolist, title: action.payload.title }
-          : todolist,
-      );
-
-    case TODOLIST_ACTIONS.SET:
+    },
+    addTodoList(state, action: PayloadAction<{ todoList: TodoListsType }>) {
+      state.push({
+        ...action.payload.todoList,
+        filter: 'all',
+        priority: TaskPriorities.Low,
+        entityStatus: 'idle',
+      });
+    },
+    renameTodoList(state, action: PayloadAction<{ todolistId: string; title: string }>) {
+      const index = state.findIndex(({ id }) => id === action.payload.todolistId);
+      state[index].title = action.payload.title;
+    },
+    setTodoList(state, action: PayloadAction<{ todolistData: TodoListsServerType[] }>) {
       return action.payload.todolistData.map(todolist => ({
         ...todolist,
         filter: 'all',
         priority: TaskPriorities.Low,
         entityStatus: 'idle',
       }));
+    },
+    changeTodolistEntityStatus(
+      state,
+      action: PayloadAction<{ todolistId: string; entityStatus: RequestStatusType }>,
+    ) {
+      const index = state.findIndex(({ id }) => id === action.payload.todolistId);
+      state[index].entityStatus = action.payload.entityStatus;
+    },
+  },
+});
 
-    case TODOLIST_ACTIONS.CHANGE_ENTITY_STATUS:
-      return state.map(tl =>
-        tl.id === action.payload.todolistId
-          ? { ...tl, entityStatus: action.payload.entityStatus }
-          : tl,
-      );
-
-    default:
-      return state;
-  }
-};
+export const {
+  renameTodoList,
+  setTodoList,
+  addTodoList,
+  removeTodolist,
+  changeFilterTodolist,
+  changeTodolistEntityStatus,
+} = slice.actions;
+export const todoListsReducer = slice.reducer;

@@ -1,4 +1,4 @@
-import { setIsLoggedIn } from 'store/actions';
+import { setIsLoggedIn } from 'store/reducers/authReducer';
 
 export type AuthActionsType = setIsLoggedInType;
 

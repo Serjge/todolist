@@ -1,5 +1,6 @@
-import { APP_ACTIONS, AppActionsType } from 'store/actions';
-import { AppType } from 'types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { AppType, RequestStatusType } from 'types';
 
 const initialState: AppType = {
   status: 'idle',
@@ -7,15 +8,21 @@ const initialState: AppType = {
   isInitialized: false,
 };
 
-export const appReducer = (state = initialState, action: AppActionsType): AppType => {
-  switch (action.type) {
-    case APP_ACTIONS.SET_STATUS:
-      return { ...state, status: action.payload.status };
-    case APP_ACTIONS.SET_ERROR:
-      return { ...state, error: action.payload.error };
-    case APP_ACTIONS.SET_INITIALIZED:
-      return { ...state, isInitialized: action.payload.initialized };
-    default:
-      return state;
-  }
-};
+const slice = createSlice({
+  name: 'app',
+  initialState,
+  reducers: {
+    setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
+      state.status = action.payload.status;
+    },
+    setAppError(state, action: PayloadAction<{ error: string | null }>) {
+      state.error = action.payload.error;
+    },
+    setIsInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
+      state.isInitialized = action.payload.initialized;
+    },
+  },
+});
+
+export const appReducer = slice.reducer;
+export const { setAppStatus, setIsInitialized, setAppError } = slice.actions;
