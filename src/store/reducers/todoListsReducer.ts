@@ -25,7 +25,7 @@ const slice = createSlice({
       return state.filter(({ id }) => id !== action.payload.todolistId);
     },
     addTodoList(state, action: PayloadAction<{ todoList: TodoListsType }>) {
-      state.push({
+      state.unshift({
         ...action.payload.todoList,
         filter: 'all',
         priority: TaskPriorities.Low,

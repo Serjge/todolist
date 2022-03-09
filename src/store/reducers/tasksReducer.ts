@@ -14,13 +14,12 @@ const slice = createSlice({
   initialState,
   reducers: {
     addTask(state, action: PayloadAction<{ task: TaskType }>) {
-      state[action.payload.task.todoListId].unshift(action.payload.task);
+      state[action.payload.task.todoListId].push(action.payload.task);
     },
     removeTask(state, action: PayloadAction<{ todolistId: string; taskId: string }>) {
-      const newState = state[action.payload.todolistId].filter(
+      state[action.payload.todolistId] = state[action.payload.todolistId].filter(
         ({ id }) => id !== action.payload.taskId,
       );
-      state[action.payload.todolistId] = newState;
     },
     setTasks(state, action: PayloadAction<{ todoListId: string; tasks: TaskType[] }>) {
       state[action.payload.todoListId] = action.payload.tasks;

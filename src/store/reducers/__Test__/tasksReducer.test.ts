@@ -1,6 +1,13 @@
 import { arrayElement, TaskPriorities, TaskStatuses, amountOfElements } from 'enum';
-import { TASK_ACTIONS, TODOLIST_ACTIONS } from 'store/actions';
-import { tasksReducer } from 'store/reducers';
+import {
+  tasksReducer,
+  removeTask,
+  changeTask,
+  addTodoList,
+  removeTodolist,
+  addTask,
+  setTasks,
+} from 'store/reducers';
 import { TasksType, TodoListsType } from 'types';
 
 let startState: TasksType;
@@ -37,13 +44,13 @@ beforeEach(() => {
 });
 
 test('remove task', () => {
-  const removeTask = tasksReducer(startState, {
-    type: TASK_ACTIONS.REMOVE,
-    payload: { todolistId: '1', taskId: '2' },
-  });
+  const deleteTask = tasksReducer(
+    startState,
+    removeTask({ todolistId: '1', taskId: '2' }),
+  );
 
-  expect(removeTask['1'][arrayElement.null].id).toBe('1');
-  expect(removeTask['1'].length).toBe(amountOfElements.one);
+  expect(deleteTask['1'][arrayElement.null].id).toBe('1');
+  expect(deleteTask['1'].length).toBe(amountOfElements.one);
 });
 
 test('change isDone task', () => {
@@ -60,10 +67,7 @@ test('change isDone task', () => {
     addedDate: '',
   };
 
-  const isDoneTask = tasksReducer(startState, {
-    type: TASK_ACTIONS.CHANGE,
-    payload: { task: updateTask },
-  });
+  const isDoneTask = tasksReducer(startState, changeTask({ task: updateTask }));
 
   expect(isDoneTask['1'][arrayElement.first].status).toBe(TaskStatuses.Completed);
   expect(isDoneTask['1'][arrayElement.first].title).toBe('JS');
@@ -83,10 +87,7 @@ test('update title task', () => {
     addedDate: '',
   };
 
-  const renameTask = tasksReducer(startState, {
-    type: TASK_ACTIONS.CHANGE,
-    payload: { task: updateTask },
-  });
+  const renameTask = tasksReducer(startState, changeTask({ task: updateTask }));
 
   expect(renameTask['1'][arrayElement.first].title).toBe('Test');
   expect(renameTask['1'][arrayElement.first].status).toBe(TaskStatuses.New);
@@ -100,23 +101,18 @@ test('add todolist', () => {
     order: -1,
     filter: 'all',
     priority: TaskPriorities.Low,
+    entityStatus: 'idle',
   };
 
-  const addTodolist = tasksReducer(startState, {
-    type: TODOLIST_ACTIONS.ADD,
-    payload: { todoList: newTodolist },
-  });
+  const addTodolist = tasksReducer(startState, addTodoList({ todoList: newTodolist }));
 
   expect(addTodolist['2'].length).toBe(amountOfElements.zero);
 });
 
 test('remove todolist', () => {
-  const removeTodolist = tasksReducer(startState, {
-    type: TODOLIST_ACTIONS.REMOVE,
-    payload: { todolistId: '1' },
-  });
+  const deleteTodolist = tasksReducer(startState, removeTodolist({ todolistId: '1' }));
 
-  expect(removeTodolist['1']).toBe(undefined);
+  expect(deleteTodolist['1']).toBe(undefined);
 });
 
 test('add task', () => {
@@ -133,14 +129,11 @@ test('add task', () => {
     addedDate: '',
   };
 
-  const addTask = tasksReducer(startState, {
-    type: TASK_ACTIONS.ADD,
-    payload: { task: newTask },
-  });
+  const addedTask = tasksReducer(startState, addTask({ task: newTask }));
 
-  expect(addTask['1'][arrayElement.first].title).toBe('ReactJS');
-  expect(addTask['1'][arrayElement.null].status).toBe(TaskStatuses.New);
-  expect(addTask['1'].length).toBe(amountOfElements.three);
+  expect(addedTask['1'][arrayElement.second].title).toBe('ReactJS');
+  expect(addedTask['1'][arrayElement.null].status).toBe(TaskStatuses.New);
+  expect(addedTask['1'].length).toBe(amountOfElements.three);
 });
 
 test('set tasks', () => {
@@ -171,12 +164,12 @@ test('set tasks', () => {
     },
   ];
 
-  const setTasks = tasksReducer(startState, {
-    type: TASK_ACTIONS.SET,
-    payload: { todoListId: '2', tasks: serverTasks },
-  });
+  const setTasksState = tasksReducer(
+    startState,
+    setTasks({ todoListId: '2', tasks: serverTasks }),
+  );
 
-  expect(setTasks['1'][arrayElement.first].title).toBe('JS');
-  expect(setTasks['1'][arrayElement.null].status).toBe(TaskStatuses.New);
-  expect(setTasks['1'].length).toBe(amountOfElements.two);
+  expect(setTasksState['1'][arrayElement.first].title).toBe('JS');
+  expect(setTasksState['1'][arrayElement.null].status).toBe(TaskStatuses.New);
+  expect(setTasksState['1'].length).toBe(amountOfElements.two);
 });
