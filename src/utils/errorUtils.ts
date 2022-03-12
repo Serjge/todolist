@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 
-import { ResponseType } from 'api';
 import { arrayElement } from 'enum';
 import { AppActionsType, ErrorUtilsDispatchType } from 'store/actions';
 import { setAppError, setAppStatus } from 'store/reducers/appReducer';
@@ -12,12 +11,12 @@ export const handleServerNetworkError = (
   dispatch(setAppError({ error: message }));
 };
 
-export const handleServerAppError = <T>(
-  data: ResponseType<T>,
+export const handleServerAppError = (
+  messages: Array<string>,
   dispatch: ErrorUtilsDispatchType,
 ): void => {
-  if (data.messages.length) {
-    dispatch(setAppError({ error: data.messages[arrayElement.null] }));
+  if (messages.length) {
+    dispatch(setAppError({ error: messages[arrayElement.null] }));
   } else {
     dispatch(setAppError({ error: 'Some error occurred' }));
   }

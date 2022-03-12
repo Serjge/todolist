@@ -13,11 +13,15 @@ export const loginTC =
   async dispatch => {
     try {
       dispatch(setAppStatus({ status: 'loading' }));
-      const res = await authAPI.login(value);
-      if (res.data.resultCode === ResultCode.success) {
+
+      const {
+        data: { resultCode, messages },
+      } = await authAPI.login(value);
+
+      if (resultCode === ResultCode.success) {
         dispatch(setIsLoggedIn({ isLoginIn: true }));
       } else {
-        handleServerAppError(res.data, dispatch);
+        handleServerAppError(messages, dispatch);
       }
     } catch (error) {
       const { message } = error as AxiosError;
@@ -31,11 +35,15 @@ export const loginTC =
 export const logoutTC = (): AppThunkType => async dispatch => {
   try {
     dispatch(setAppStatus({ status: 'loading' }));
-    const res = await authAPI.logout();
-    if (res.data.resultCode === ResultCode.success) {
+
+    const {
+      data: { resultCode, messages },
+    } = await authAPI.logout();
+
+    if (resultCode === ResultCode.success) {
       dispatch(setIsLoggedIn({ isLoginIn: false }));
     } else {
-      handleServerAppError(res.data, dispatch);
+      handleServerAppError(messages, dispatch);
     }
   } catch (error) {
     const { message } = error as AxiosError;

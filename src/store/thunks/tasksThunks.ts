@@ -3,9 +3,14 @@ import { AxiosError } from 'axios';
 import { taskAPI } from 'api';
 import { ResultCode } from 'enum';
 import { rootReducerType, store } from 'store';
-import { setAppStatus } from 'store/reducers/appReducer';
-import { addTask, changeTask, removeTask, setTasks } from 'store/reducers/tasksReducer';
-import { changeTodolistEntityStatus } from 'store/reducers/todoListsReducer';
+import {
+  addTask,
+  changeTask,
+  removeTask,
+  setTasks,
+  changeTodolistEntityStatus,
+  setAppStatus,
+} from 'store/reducers';
 import { selectTask } from 'store/selectors';
 import { AppThunkType } from 'store/thunks';
 import { TaskType } from 'types';
@@ -17,8 +22,12 @@ export const getTasksTC =
     try {
       dispatch(setAppStatus({ status: 'loading' }));
       dispatch(changeTodolistEntityStatus({ todolistId, entityStatus: 'idle' }));
-      const res = await taskAPI.getTasks(todolistId);
-      dispatch(setTasks({ todoListId: todolistId, tasks: res.data.items }));
+
+      const {
+        data: { items },
+      } = await taskAPI.getTasks(todolistId);
+
+      dispatch(setTasks({ todoListId: todolistId, tasks: items }));
     } catch (error) {
       const { message } = error as AxiosError;
 
@@ -35,11 +44,19 @@ export const addTaskTC =
     try {
       dispatch(setAppStatus({ status: 'loading' }));
       dispatch(changeTodolistEntityStatus({ todolistId, entityStatus: 'loading' }));
-      const res = await taskAPI.creatTask(todolistId, title);
-      if (res.data.resultCode === ResultCode.success) {
-        store.dispatch(addTask({ task: res.data.data.item }));
+
+      const {
+        data: {
+          data: { item },
+          resultCode,
+          messages,
+        },
+      } = await taskAPI.creatTask(todolistId, title);
+
+      if (resultCode === ResultCode.success) {
+        store.dispatch(addTask({ task: item }));
       } else {
-        handleServerAppError(res.data, dispatch);
+        handleServerAppError(messages, dispatch);
       }
     } catch (error) {
       const { message } = error as AxiosError;
@@ -57,10 +74,10 @@ export const removeTaskTC =
     try {
       dispatch(setAppStatus({ status: 'loading' }));
       dispatch(changeTodolistEntityStatus({ todolistId, entityStatus: 'loading' }));
+
       await taskAPI.deleteTask(todolistId, taskId);
-      const action = removeTask({ todolistId, taskId });
-      dispatch(action);
-      // dispatch(removeTask({ todolistId, taskId }));
+
+      dispatch(removeTask({ todolistId, taskId }));
     } catch (error) {
       const { message } = error as AxiosError;
 
@@ -77,12 +94,20 @@ export const updateTaskTC =
     try {
       dispatch(changeTodolistEntityStatus({ todolistId, entityStatus: 'loading' }));
       dispatch(setAppStatus({ status: 'loading' }));
-      const task = selectTask(getState(), todolistId, taskId) as TaskType;
-      const res = await taskAPI.updateTask({ ...task, ...change });
-      if (res.data.resultCode === ResultCode.success) {
-        dispatch(changeTask({ task: res.data.data.item }));
+
+      const task = selectTask(getState(), todolistId, taskId);
+      const {
+        data: {
+          data: { item },
+          resultCode,
+          messages,
+        },
+      } = await taskAPI.updateTask({ ...task, ...change });
+
+      if (resultCode === ResultCode.success) {
+        dispatch(changeTask({ task: item }));
       } else {
-        handleServerAppError(res.data, dispatch);
+        handleServerAppError(messages, dispatch);
       }
     } catch (error) {
       const { message } = error as AxiosError;

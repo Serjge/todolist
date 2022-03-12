@@ -10,11 +10,15 @@ import { handleServerAppError, handleServerNetworkError } from 'utils';
 export const initializeAppTC = (): AppThunkType => async dispatch => {
   try {
     dispatch(setAppStatus({ status: 'loading' }));
-    const res = await authAPI.me();
-    if (res.data.resultCode === ResultCode.success) {
+
+    const {
+      data: { resultCode, messages },
+    } = await authAPI.me();
+
+    if (resultCode === ResultCode.success) {
       dispatch(setIsLoggedIn({ isLoginIn: true }));
     } else {
-      handleServerAppError(res.data, dispatch);
+      handleServerAppError(messages, dispatch);
     }
   } catch (error) {
     const { message } = error as AxiosError;
