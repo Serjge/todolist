@@ -69,7 +69,6 @@ export const Login = (): ReactElement => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {' '}
                   here
                 </a>
               </p>
