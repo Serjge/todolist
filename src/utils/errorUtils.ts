@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 
 import { arrayElement } from 'enum';
 import { AppActionsType, ErrorUtilsDispatchType } from 'store/actions';
-import { setAppError, setAppStatus } from 'store/reducers/appReducer';
+import { setAppError, setAppStatus } from 'store/reducers';
 
 export const handleServerNetworkError = (
   dispatch: Dispatch<AppActionsType>,

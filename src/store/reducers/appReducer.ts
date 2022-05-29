@@ -15,9 +15,11 @@ const slice = createSlice({
     setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
       state.status = action.payload.status;
     },
+
     setAppError(state, action: PayloadAction<{ error: string | null }>) {
       state.error = action.payload.error;
     },
+
     setIsInitialized(state, action: PayloadAction<{ initialized: boolean }>) {
       state.isInitialized = action.payload.initialized;
     },

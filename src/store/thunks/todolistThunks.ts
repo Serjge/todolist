@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 
 import { todolistAPI } from 'api';
-import { setAppStatus } from 'store/reducers/appReducer';
 import {
+  setAppStatus,
   addTodoList,
   changeTodolistEntityStatus,
   removeTodolist,
   renameTodoList,
   setTodoList,
-} from 'store/reducers/todoListsReducer';
+} from 'store/reducers';
 import { AppThunkType } from 'store/thunks';
 import { handleServerNetworkError } from 'utils';
 

@@ -17,11 +17,11 @@ export type {
 
 export type { ActionsType } from 'store/actions/type/ActionsType';
 
-export type {
-  AppActionsType,
-  setAppStatusType,
-  setAppErrorType,
-  ErrorUtilsDispatchType,
-} from 'store/actions/type/AppActionsType';
-
 export type { setIsLoggedInType, AuthActionsType } from './AuthActionsType';
+export type {
+  ErrorUtilsDispatchType,
+  setAppErrorType,
+  setAppStatusType,
+  AppActionsType,
+  setIsInitializedType,
+} from './AppActionsType';

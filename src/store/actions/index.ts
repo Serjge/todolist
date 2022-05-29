@@ -1,4 +1,3 @@
-export { TASK_ACTIONS } from './tasksActions';
 export type {
   TasksActionType,
   ActionsType,
@@ -10,7 +9,3 @@ export type {
   setIsLoggedInType,
   AuthActionsType,
 } from './type';
-
-export { AUTH_ACTIONS } from './authActions';
-
-export { APP_ACTIONS } from './appActions';

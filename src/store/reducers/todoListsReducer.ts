@@ -21,9 +21,11 @@ const slice = createSlice({
       const index = state.findIndex(({ id }) => id === action.payload.todolistId);
       state[index].filter = action.payload.filter;
     },
+
     removeTodolist(state, action: PayloadAction<{ todolistId: string }>) {
       return state.filter(({ id }) => id !== action.payload.todolistId);
     },
+
     addTodoList(state, action: PayloadAction<{ todoList: TodoListsType }>) {
       state.unshift({
         ...action.payload.todoList,
@@ -32,10 +34,12 @@ const slice = createSlice({
         entityStatus: 'idle',
       });
     },
+
     renameTodoList(state, action: PayloadAction<{ todolistId: string; title: string }>) {
       const index = state.findIndex(({ id }) => id === action.payload.todolistId);
       state[index].title = action.payload.title;
     },
+
     setTodoList(state, action: PayloadAction<{ todolistData: TodoListsServerType[] }>) {
       return action.payload.todolistData.map(todolist => ({
         ...todolist,
@@ -44,6 +48,7 @@ const slice = createSlice({
         entityStatus: 'idle',
       }));
     },
+
     changeTodolistEntityStatus(
       state,
       action: PayloadAction<{ todolistId: string; entityStatus: RequestStatusType }>,
