@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 
-import { instance, GetTasksResponse, ResponseType } from 'api';
+import { GetTasksResponse, instance, ResponseType } from 'api';
+import { pathApi } from 'const';
 import { TaskType } from 'types';
 
 export const taskAPI = {
   getTasks(todolistId: string) {
-    return instance.get<GetTasksResponse>(`/todo-lists/${todolistId}/tasks`);
+    return instance.get<GetTasksResponse>(pathApi.tasks({ todolistId }));
   },
 
   creatTask(todolistId: string, title: string) {
@@ -13,18 +14,18 @@ export const taskAPI = {
       ResponseType<{ item: TaskType }>,
       AxiosResponse<ResponseType<{ item: TaskType }>>,
       { title: string }
-    >(`/todo-lists/${todolistId}/tasks`, { title });
+    >(pathApi.tasks({ todolistId }), { title });
   },
 
   deleteTask(todolistId: string, taskId: string) {
-    return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`);
+    return instance.delete<ResponseType>(pathApi.task({ todolistId, taskId }));
   },
 
-  updateTask(model: Partial<TaskType>) {
+  updateTask(model: TaskType) {
     return instance.put<
       ResponseType<{ item: TaskType }>,
       AxiosResponse<ResponseType<{ item: TaskType }>>,
       Partial<TaskType>
-    >(`/todo-lists/${model.todoListId}/tasks/${model.id}`, model);
+    >(pathApi.task({ todolistId: model.todoListId, taskId: model.id }), model);
   },
 };

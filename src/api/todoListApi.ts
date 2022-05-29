@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 
 import { ResponseType, instance } from 'api';
+import { pathApi } from 'const';
 import { TodoListsType } from 'types';
 
 export const todolistAPI = {
   getTodoList() {
-    return instance.get<TodoListsType[]>('todo-lists');
+    return instance.get<TodoListsType[]>(pathApi.todolists());
   },
 
   createTodoList(title: string) {
@@ -13,14 +14,14 @@ export const todolistAPI = {
       ResponseType<{ item: TodoListsType }>,
       AxiosResponse<ResponseType<{ item: TodoListsType }>>,
       { title: string }
-    >('todo-lists', { title });
+    >(pathApi.todolists(), { title });
   },
 
   deleteTodoList(todolistId: string) {
-    return instance.delete<ResponseType>(`todo-lists/${todolistId}`);
+    return instance.delete<ResponseType>(pathApi.todolist({ todolistId }));
   },
 
   updateTodoList(todolistId: string, title: string) {
-    return instance.put<ResponseType>(`todo-lists/${todolistId}`, { title });
+    return instance.put<ResponseType>(pathApi.todolist({ todolistId }), { title });
   },
 };
