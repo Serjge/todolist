@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { rootReducerType } from 'store';
-import { changeFilterTodolist } from 'store/reducers/todoListsReducer';
+import { changeFilterTodolist } from 'store/reducers';
 import { selectTodoListFilter } from 'store/selectors';
 import { FilterValuesType } from 'types';
 
@@ -22,15 +22,15 @@ export const ButtonFilter = memo(
       selectTodoListFilter(state, todolistId),
     );
 
-    const handleOnClick = useCallback(
+    const onButtonClick = useCallback(
       () => dispatch(changeFilterTodolist({ todolistId, filter: filterName })),
-      [todolistId, dispatch],
+      [todolistId],
     );
 
     return (
       <Button
         style={{ margin: '5px' }}
-        onClick={handleOnClick}
+        onClick={onButtonClick}
         variant={filter === filterName ? 'contained' : 'outlined'}
         size="small"
       >

@@ -20,14 +20,14 @@ export const ContainerTodoLists = memo((): ReactElement => {
     }
   }, []);
 
-  const addTodoListHandler = useCallback(
+  const addTodoList = useCallback(
     (title: string) => {
       dispatch(addTodoListTC(title));
     },
     [dispatch],
   );
 
-  const TodoListsMap = todoListsId.map(id => (
+  const todoListsMap = todoListsId.map(id => (
     <Grid key={id} item>
       <Paper style={{ padding: '10px', position: 'relative' }}>
         <Todolist todolistId={id} />
@@ -42,11 +42,11 @@ export const ContainerTodoLists = memo((): ReactElement => {
   return (
     <>
       <Grid container justifyContent="center" style={{ padding: '20px' }}>
-        <AddItemForm label="Name Todolist" addTask={addTodoListHandler} />
+        <AddItemForm label="Name Todolist" addTask={addTodoList} />
       </Grid>
       <Container fixed>
         <Grid container spacing={3}>
-          {TodoListsMap}
+          {todoListsMap}
         </Grid>
       </Container>
     </>

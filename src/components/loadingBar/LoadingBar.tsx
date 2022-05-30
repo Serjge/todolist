@@ -7,6 +7,7 @@ import { selectStatus } from 'store/selectors';
 
 export const LoadingBar = (): ReactElement => {
   const status = useSelector(selectStatus);
+
   return (
     <div style={{ height: '50px' }}>{status === 'loading' && <LinearProgress />}</div>
   );

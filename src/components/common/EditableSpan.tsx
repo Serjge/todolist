@@ -21,27 +21,37 @@ export const EditableSpan = memo(({ title, rename, label }: EditableSpanPropsTyp
       setError(true);
     }
   };
+
   const onChangeNameHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     if (error) {
       setError(false);
     }
     setNewTitle(e.currentTarget.value);
   };
+
   const onClickSpan = (): void => {
     setEdit(false);
     setNewTitle(title);
   };
+
   const onKeyPress = (e: KeyboardEvent<HTMLDivElement>): void => {
     if (e.key === 'Enter') {
       activeViewMode();
     }
   };
 
-  return edit ? (
-    <p style={{ whiteSpace: 'pre-wrap', maxWidth: '200px' }} onDoubleClick={onClickSpan}>
-      {title}
-    </p>
-  ) : (
+  if (edit) {
+    return (
+      <p
+        style={{ whiteSpace: 'pre-wrap', maxWidth: '200px' }}
+        onDoubleClick={onClickSpan}
+      >
+        {title}
+      </p>
+    );
+  }
+
+  return (
     <TextField
       id="outlined-basic"
       label={error ? 'Title is required' : label}

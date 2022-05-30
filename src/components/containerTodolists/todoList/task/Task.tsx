@@ -18,10 +18,10 @@ type TaskPropsType = {
 export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
   const dispatch = useDispatch();
 
-  const status = useSelector((state: rootReducerType) =>
+  const taskStatus = useSelector((state: rootReducerType) =>
     selectTaskStatus(state, todolistId, taskId),
   );
-  const title = useSelector((state: rootReducerType) =>
+  const taskTitle = useSelector((state: rootReducerType) =>
     selectTaskTitle(state, todolistId, taskId),
   );
 
@@ -32,37 +32,33 @@ export const Task = memo(({ taskId, todolistId }: TaskPropsType) => {
 
   const isDoneTask = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const newIsDoneValue = e.currentTarget.checked;
-
-      dispatch(
-        updateTaskTC(todolistId, taskId, {
-          status: newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New,
-        }),
-      );
+      const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
+      dispatch(updateTaskTC(todolistId, taskId, { status }));
     },
-    [dispatch, todolistId, taskId],
+    [todolistId, taskId],
   );
 
   const renameTask = useCallback(
-    (titleTask: string) =>
-      dispatch(updateTaskTC(todolistId, taskId, { title: titleTask })),
-    [todolistId, taskId, dispatch],
+    (title: string) => dispatch(updateTaskTC(todolistId, taskId, { title })),
+    [todolistId, taskId],
   );
 
   return (
-    <div style={{ height: '60px' }} key={taskId} className={status ? 'is-done' : ''}>
+    <div style={{ height: '60px' }} key={taskId} className={taskStatus ? 'is-done' : ''}>
       <Grid container alignItems="center" justifyContent="space-between" spacing={1}>
         <Grid item>
           <Checkbox
             inputProps={{ 'aria-label': 'controlled' }}
             size="small"
             onChange={isDoneTask}
-            checked={status === TaskStatuses.Completed}
+            checked={taskStatus === TaskStatuses.Completed}
           />
         </Grid>
+
         <Grid item>
-          <EditableSpan rename={renameTask} title={title} label="Name Task" />
+          <EditableSpan rename={renameTask} title={taskTitle} label="Name Task" />
         </Grid>
+
         <Grid item>
           <IconButton onClick={deleteTask} aria-label="delete">
             <Delete />
