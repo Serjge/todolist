@@ -22,14 +22,14 @@ export const EditableSpan = memo(({ title, rename, label }: EditableSpanPropsTyp
     }
   };
 
-  const onChangeNameHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+  const onTitleSaveChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (error) {
       setError(false);
     }
     setNewTitle(e.currentTarget.value);
   };
 
-  const onClickSpan = (): void => {
+  const onRenameTitleClick = (): void => {
     setEdit(false);
     setNewTitle(title);
   };
@@ -44,7 +44,7 @@ export const EditableSpan = memo(({ title, rename, label }: EditableSpanPropsTyp
     return (
       <p
         style={{ whiteSpace: 'pre-wrap', maxWidth: '200px' }}
-        onDoubleClick={onClickSpan}
+        onDoubleClick={onRenameTitleClick}
       >
         {title}
       </p>
@@ -59,7 +59,7 @@ export const EditableSpan = memo(({ title, rename, label }: EditableSpanPropsTyp
       variant="outlined"
       value={newTitle}
       size="small"
-      onChange={onChangeNameHandler}
+      onChange={onTitleSaveChange}
       onBlur={activeViewMode}
       autoFocus
       onKeyPress={onKeyPress}

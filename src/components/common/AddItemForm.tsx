@@ -12,8 +12,10 @@ export const AddItemForm = memo(({ addTask, label }: AddItemFormPropsType) => {
   const [error, setError] = useState<boolean>(false);
 
   const addTaskHandler = useCallback((): void => {
-    if (refTitle.current!.value.trim() !== '') {
-      addTask(refTitle.current!.value.trim());
+    const { value } = refTitle.current!;
+
+    if (value.trim() !== '') {
+      addTask(value.trim());
       refTitle.current!.value = '';
     } else {
       setError(true);

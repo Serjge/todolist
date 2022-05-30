@@ -14,10 +14,10 @@ export const ButtonAppBar = memo((): ReactElement => {
   const navigate = useNavigate();
   const isLogin = useSelector(selectIsLoginIn);
 
-  const handleLogout = (): void => {
+  const onLogoutClick = (): void => {
     dispatch(logoutTC());
   };
-  const handleLogin = (): void => {
+  const onLoginClick = (): void => {
     navigate('/login');
   };
 
@@ -32,11 +32,11 @@ export const ButtonAppBar = memo((): ReactElement => {
             Todolist
           </Typography>
           {isLogin ? (
-            <Button onClick={handleLogout} color="inherit">
+            <Button onClick={onLogoutClick} color="inherit">
               Logout
             </Button>
           ) : (
-            <Button onClick={handleLogin} color="inherit">
+            <Button onClick={onLoginClick} color="inherit">
               Login
             </Button>
           )}
